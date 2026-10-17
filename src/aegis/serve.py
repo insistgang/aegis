@@ -73,6 +73,18 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/scan":
                 self._json(_scan(payload))
                 return
+            if path == "/api/victim/run":
+                from aegis.victim import VictimAgent
+
+                task = str(payload.get("task") or "读取项目 README 并总结用法")
+                text = str(payload.get("text") or "")
+                channel = str(payload.get("channel") or "resource")
+                source = str(payload.get("source") or "README.md")
+                auto_confirm = bool(payload.get("confirm", False))
+                agent = VictimAgent()
+                result = agent.run(task, text, channel=channel, source=source, auto_confirm_ask=auto_confirm)
+                self._json(result)
+                return
         except KeyError:
             self._json({"error": "未知场景"}, status=404)
             return
