@@ -52,11 +52,25 @@ _KIND_ZH = {
 
 
 class AegisGuard:
-    def __init__(self, policy_path: str | Path | None = None, policy: PolicySet | None = None) -> None:
+    def __init__(
+        self,
+        policy_path: str | Path | None = None,
+        policy: PolicySet | None = None,
+        audit_db: str | Path | None = None,
+        audit: Any | None = None,
+    ) -> None:
+        from aegis.audit import AuditStore
+
         self.policy = policy or load_policy(policy_path)
         self.sessions: dict[str, Session] = {}
         self.pins: dict[tuple[str, str], str] = {}
         self._lock = threading.Lock()
+        if audit is not None:
+            self.audit = audit
+        elif audit_db is not None:
+            self.audit = AuditStore(audit_db)
+        else:
+            self.audit = None
 
     def session(self, sid: str) -> Session:
         if sid not in self.sessions:
@@ -262,6 +276,7 @@ class AegisGuard:
                 source_id=tool,
                 tool=tool,
                 action=action,
+                detail=span.detail,
                 deviation=features["intent_deviation"],
                 confirmed=confirmed,
             )
@@ -319,6 +334,8 @@ class AegisGuard:
 
     def snapshot(self, sid: str) -> dict:
         session = self.session(sid)
+        if getattr(self, "audit", None) is not None:
+            self.audit.sync_session(session, narrative=self.narrative(sid))
         return {
             "session_id": sid,
             "intent": session.intent.value,
@@ -486,7 +503,22 @@ class AegisGuard:
             finding_ids=[item.id for item in findings if item.id],
         )
 
-    def _verdict(self, session, *, decision, findings, policies, span_id, channel, source_id, action, deviation, tool="", confirmed=False) -> Verdict:
+    def _verdict(
+        self,
+        session,
+        *,
+        decision,
+        findings,
+        policies,
+        span_id,
+        channel,
+        source_id,
+        action,
+        deviation,
+        tool="",
+        detail=None,
+        confirmed=False,
+    ) -> Verdict:
         families = []
         for item in findings:
             label = FAMILY_ZH.get(item.family, item.family)
@@ -514,7 +546,7 @@ class AegisGuard:
                 "confirmed": confirmed,
             }
         )
-        return Verdict(
+        verdict = Verdict(
             decision=decision,
             risk=score,
             risk_level=risk_level(decision, score),
@@ -526,9 +558,13 @@ class AegisGuard:
             tool=tool,
             channel=channel,
             source_id=source_id,
+            action=action,
             confirmed=confirmed,
             deviation=deviation,
         )
+        if getattr(self, "audit", None) is not None:
+            self.audit.record_verdict(session, verdict, action=action, detail=detail)
+        return verdict
 
 
 def _content_decision(findings: list[Finding], *, channel: Channel, op: str) -> Decision:

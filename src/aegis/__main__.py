@@ -33,6 +33,13 @@ def main(argv: list[str] | None = None) -> int:
     show = sub.add_parser("show", help="打印一个场景的研判结论")
     show.add_argument("scenario")
 
+    audit = sub.add_parser("audit", help="SQLite 审计记录与导出")
+    audit_sub = audit.add_subparsers(dest="audit_command", required=True)
+    audit_export = audit_sub.add_parser("export", help="导出 JSON 审计记录")
+    audit_export.add_argument("--db", required=True, help="SQLite 数据库文件路径")
+    audit_export.add_argument("--session", default=None, help="指定会话 ID（可选）")
+    audit_export.add_argument("--output", default=None, help="输出 JSON 文件路径（默认标准输出）")
+
     args = parser.parse_args(argv)
     if args.command == "demo":
         return _demo()
@@ -53,6 +60,15 @@ def main(argv: list[str] | None = None) -> int:
         print(report["narrative"])
         print(report["mermaid"])
         return 0 if report["passed"] else 1
+    if args.command == "audit":
+        from aegis.audit import AuditStore
+
+        store = AuditStore(args.db)
+        if args.audit_command == "export":
+            content = store.export_json(session_id=args.session, output_path=args.output)
+            if not args.output:
+                print(content)
+            return 0
     return 2
 
 

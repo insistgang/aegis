@@ -114,6 +114,7 @@ class Verdict:
     tool: str = ""
     channel: str = ""
     source_id: str = ""
+    action: str = ""
     confirmed: bool = False
     deviation: float = 0.0
 
@@ -133,5 +134,6 @@ class Verdict:
             "tool": self.tool,
             "channel": self.channel,
             "source_id": self.source_id,
+            "action": self.action,
             "confirmed": self.confirmed,
         }
