@@ -28,6 +28,7 @@ def main(argv: list[str] | None = None) -> int:
 
     proxy = sub.add_parser("proxy", help="作为 MCP 中间代理转发上游 stdio server")
     proxy.add_argument("--name", default="upstream")
+    proxy.add_argument("--config", default=None, help="多上游配置文件路径（JSON 或 YAML）")
     proxy.add_argument("upstream", nargs=argparse.REMAINDER)
 
     show = sub.add_parser("show", help="打印一个场景的研判结论")
@@ -54,7 +55,7 @@ def main(argv: list[str] | None = None) -> int:
         upstream = list(args.upstream)
         if upstream and upstream[0] == "--":
             upstream = upstream[1:]
-        return serve_stdio(upstream, server_name=args.name)
+        return serve_stdio(upstream, server_name=args.name, config_path=args.config)
     if args.command == "show":
         report = run_scenario(args.scenario)
         print(report["narrative"])
