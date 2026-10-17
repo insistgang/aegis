@@ -1,0 +1,184 @@
+# 神盾 AEGIS 默认策略。
+# 解释器拒绝缺失或弱于赛题基线的文件：敏感写入、密钥外发、恶意命令、
+# 检视时推送、子 Agent 携带密钥，这五条必须保持 block。
+version: 1
+trusted_domains:
+  - github.com
+  - githubusercontent.com
+  - gitlab.com
+
+rules:
+  - id: fs-write-sensitive
+    description: 禁止向 SSH、云凭证、cron 与系统自启动目录写入
+    tool: fs.write
+    decision: block
+    risk: critical
+    when:
+      path_any:
+        - "**/.ssh/**"
+        - "**/.aws/**"
+        - "**/.gnupg/**"
+        - "**/.kube/**"
+        - "**/authorized_keys"
+        - "**/.env"
+        - "**/.env.*"
+        - "**/credentials"
+        - "**/credentials.json"
+        - "/etc/cron*"
+        - "/etc/cron*/**"
+        - "/etc/crontab"
+        - "**/cron.d/**"
+        - "**/LaunchAgents/**"
+        - "**/LaunchDaemons/**"
+        - "**/systemd/system/**"
+        - "**/systemd/user/**"
+
+  - id: fs-read-credential
+    description: 阅读、检视、改代码和未知任务都不得读取凭据
+    tool: fs.read
+    decision: block
+    risk: high
+    when:
+      all:
+        - path_sensitive_read: true
+        - intent_in: [read_doc, code_review, code_edit, data_query, unknown]
+
+  - id: fs-read-credential-ops
+    description: 运维排查可以读凭据，但必须先问用户
+    tool: fs.read
+    decision: ask
+    risk: medium
+    when:
+      all:
+        - path_sensitive_read: true
+        - intent_in: [ops]
+        - injection_active: false
+
+  - id: fs-read-credential-under-injection
+    description: 会话已被注入时，运维名义也不能读凭据
+    tool: fs.read
+    decision: block
+    risk: critical
+    when:
+      all:
+        - path_sensitive_read: true
+        - injection_active: true
+
+  - id: net-exfil-secret
+    description: 禁止把本会话读到的密钥发往非信任域名
+    tool: net.fetch
+    decision: block
+    risk: critical
+    when:
+      all:
+        - domain_not_trusted: true
+        - carries_session_secret: true
+
+  - id: net-exfil-secret-pattern
+    description: 请求体里直接出现密钥材料时同样阻断
+    tool: net.fetch
+    decision: block
+    risk: critical
+    when:
+      all:
+        - domain_not_trusted: true
+        - args_contain_secret: true
+
+  - id: net-ioc
+    description: 注入文本里点名的外部主机，后续网络调用直接阻断
+    tool: net.fetch
+    decision: block
+    risk: critical
+    when:
+      all:
+        - ioc_match: true
+        - injection_active: true
+
+  - id: net-untrusted-ask
+    description: 发往策略未信任的域名，先询问用户
+    tool: net.fetch
+    decision: ask
+    risk: medium
+    when:
+      all:
+        - domain_not_trusted: true
+        - carries_session_secret: false
+        - args_contain_secret: false
+        - ioc_match: false
+
+  - id: exec-malicious
+    description: 禁止远程下载后执行、解码后执行以及等价拼接
+    tool: exec
+    decision: block
+    risk: critical
+    when:
+      command_class_any: [download_pipe, decode_exec, command_subst_download, download_exec_chain]
+
+  - id: exec-destructive
+    description: 禁止对根文件系统的破坏性命令
+    tool: exec
+    decision: block
+    risk: critical
+    when:
+      command_class_any: [destructive]
+
+  - id: git-push-off-review
+    description: 用户任务是检视或阅读时，禁止推送
+    tool: git.push
+    decision: block
+    risk: high
+    when:
+      intent_in: [code_review, read_doc, data_query]
+
+  - id: git-commit-off-review
+    description: 检视任务同样禁止创建提交
+    tool: git.commit
+    decision: block
+    risk: high
+    when:
+      intent_in: [code_review, read_doc, data_query]
+
+  - id: git-push-injected
+    description: 不可信内容已经进入会话时，禁止推送
+    tool: git.push
+    decision: block
+    risk: critical
+    when:
+      injection_active: true
+
+  - id: git-push-confirm
+    description: 即便任务是改代码，推送远程仍要用户确认
+    tool: git.push
+    decision: ask
+    risk: medium
+    when:
+      intent_in: [code_edit, ops, ship, unknown]
+
+  - id: subagent-secret
+    description: 禁止把会话密钥或参数中的密钥交给子 Agent
+    tool: agent.*
+    decision: block
+    risk: critical
+    when:
+      any:
+        - carries_session_secret: true
+        - args_contain_secret: true
+
+  - id: off-intent-consequential
+    description: 与任务无关的写、执行、外发和推送，先询问用户
+    tool: "*"
+    decision: ask
+    risk: medium
+    when:
+      all:
+        - tool_consequential: true
+        - intent_deviation_gte: 0.65
+
+  - id: write-dot-config-ask
+    description: 写入用户配置目录前提示确认
+    tool: fs.write
+    decision: ask
+    risk: medium
+    when:
+      path_any:
+        - "**/.config/**"
