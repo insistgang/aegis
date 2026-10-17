@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import json
+import re
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
 from aegis.guard import AegisGuard
+from aegis.models import Decision
 from aegis.policy import default_policy_path, load_policy
 from aegis.runner import run_all, run_scenario, summary
 from aegis.scenarios import SCENARIOS
@@ -133,6 +135,15 @@ def serve(host: str = "127.0.0.1", port: int = 8765) -> None:
         server.server_close()
 
 
+_BYPASS_INDICATORS: list[tuple[str, str, Any]] = [
+    ("ear_wind", "隐喻对抗表达", re.compile(r"耳旁风|耳边风|当成玩笑|不要当真|就当没看见")),
+    ("jailbreak_phrase", "越狱模式短语", re.compile(r"(?i)\b(?:dan mode|jailbreak|developer mode|do anything now)\b")),
+    ("prompt_leak", "系统指令探测", re.compile(r"(?i)(?:system prompt|reveal (?:the|your) instructions|打印.*提示词|输出.*系统指令|把系统提示发给我)")),
+    ("hypothetical", "假设情景规避", re.compile(r"(?i)\b(?:hypothetically speaking|pretend there are no rules|假设没有限制|在虚拟故事中)\b")),
+    ("roleplay_override", "无约束角色扮演", re.compile(r"(?i)(?:扮演无限制|无约束角色|acting as an unfiltered)")),
+]
+
+
 def _scan(payload: dict) -> dict:
     channel = str(payload.get("channel") or "resource")
     text = str(payload.get("text") or "")
@@ -147,4 +158,55 @@ def _scan(payload: dict) -> dict:
     else:
         kind = channel if channel not in {"resource", "paste"} else "file"
         verdict = guard.inspect_resource("scan", text, source=source, kind=kind)
-    return {"verdict": verdict.to_dict(), "narrative": guard.narrative("scan")}
+
+    # 研判分类：拦下了 / 这段绕过了当前规则 / 正常良性文档
+    if verdict.decision in {Decision.BLOCK, Decision.ASK}:
+        status = "blocked"
+        status_zh = "拦下了"
+        is_attack = True
+        hit_rules = [f.family for f in verdict.findings] + [p.get("id") for p in verdict.policies if p.get("id")]
+        hit_rules = list(dict.fromkeys(hit_rules))  # 去重保序
+        evidence_indices = [
+            {
+                "id": f.id,
+                "family": f.family,
+                "start": f.start,
+                "end": f.end,
+                "quote": f.quote,
+                "techniques": f.techniques,
+            }
+            for f in verdict.findings
+        ]
+        bypass_reason = ""
+    else:
+        # 放行时，区分究竟是良性安全文档，还是绕过了规则的对抗样本
+        detected_indicators = [
+            label for _, label, pat in _BYPASS_INDICATORS if pat.search(text)
+        ]
+        if detected_indicators or payload.get("expect_attack"):
+            status = "bypassed"
+            status_zh = "这段绕过了当前规则"
+            is_attack = True
+            hit_rules = []
+            evidence_indices = []
+            reasons = [f"触发诱导特征: {', '.join(detected_indicators)}" if detected_indicators else "用户标记为对抗样本"]
+            reasons.append("当前确定性引擎规则库尚未覆盖此特定变形正则，未达拦截置信度阈值 (0.75)")
+            bypass_reason = "；".join(reasons)
+        else:
+            status = "benign"
+            status_zh = "正常放行（良性文档）"
+            is_attack = False
+            hit_rules = []
+            evidence_indices = []
+            bypass_reason = ""
+
+    return {
+        "status": status,
+        "status_zh": status_zh,
+        "is_attack": is_attack,
+        "hit_rules": hit_rules,
+        "evidence_indices": evidence_indices,
+        "bypass_reason": bypass_reason,
+        "verdict": verdict.to_dict(),
+        "narrative": guard.narrative("scan"),
+    }

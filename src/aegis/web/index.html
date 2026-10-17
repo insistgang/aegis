@@ -344,17 +344,45 @@ document.querySelector("#scan").onclick = async () => {
     method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload)
   })).json();
   const verdict = data.verdict;
+  const statusClass = data.status === "blocked" ? "block" : data.status === "bypassed" ? "ask" : "allow";
+
+  let extraBlock = "";
+  if (data.status === "bypassed") {
+    extraBlock = `
+      <div class="panel" style="margin-top:16px;border-color:var(--ask)">
+        <h2 style="color:var(--ask)">绕过研判 · 没接住的原因</h2>
+        <p style="font-size:15px;line-height:1.6">${esc(data.bypass_reason)}</p>
+      </div>`;
+  } else if (data.status === "blocked") {
+    const rulesList = (data.hit_rules || []).map((r) => `<span class="chip">${esc(r)}</span>`).join("");
+    const evidenceRows = (data.evidence_indices || []).map((item) =>
+      `<tr><td><strong>${esc(item.family)}</strong></td><td><code>${esc(item.quote)}</code></td><td>${item.start ?? "?"} – ${item.end ?? "?"}</td></tr>`
+    ).join("");
+    extraBlock = `
+      <div class="panel" style="margin-top:16px">
+        <h2>命中规则</h2>
+        <div class="chips">${rulesList || "<span class='chip'>启发式阻断</span>"}</div>
+        <h2 style="margin-top:14px">证据定位与下标</h2>
+        <table><thead><tr><th>规则分类</th><th>命中文本片段</th><th>字符下标范围 (start–end)</th></tr></thead><tbody>${evidenceRows || "<tr><td colspan='3'>无结构化下标</td></tr>"}</tbody></table>
+      </div>`;
+  } else {
+    extraBlock = `
+      <div class="panel" style="margin-top:16px;border-color:var(--allow)">
+        <h2 style="color:var(--allow)">良性文档判定结果</h2>
+        <p style="font-size:15px;line-height:1.6">未检测到任何提示注入特征或恶意调用指令，符合良性安全规范，安全放行。</p>
+      </div>`;
+  }
+
   main.innerHTML = `
     <div class="hero">
       <div>
-        <h2 style="margin:0">临时检查 · ${esc(payload.channel)}</h2>
+        <div class="chips"><span class="chip">通道: ${esc(payload.channel)}</span><span class="chip">研判状态: ${esc(data.status)}</span></div>
+        <h2 style="margin:0">${esc(data.status_zh)}</h2>
         <p class="narrative">${esc(verdict.explanation)}</p>
       </div>
-      <div class="mark ${esc(verdict.decision)}">${esc(verdict.decision_zh)}</div>
+      <div class="mark ${statusClass}">${esc(data.status_zh)}</div>
     </div>
-    <div class="panel" style="margin-top:16px"><h2>证据</h2>
-      <table><tbody>${(verdict.findings || []).map((item) => `<tr><td>${esc(item.family_zh)}</td><td>${esc(item.quote)}</td><td>${item.start ?? ""}–${item.end ?? ""}</td></tr>`).join("") || "<tr><td>没有识别到注入片段。</td></tr>"}</tbody></table>
-    </div>`;
+    ${extraBlock}`;
 };
 
 loadList();
