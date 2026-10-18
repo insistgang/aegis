@@ -32,6 +32,13 @@ def main() -> None:
         assert result["rows"] == expected_rows
         assert digest(ROOT / f"data/evaluation/paired_{layer}_runs.jsonl") == result["raw_sha256"]
         paired[layer] = {k: result[k] for k in ["rows", "raw_sha256", "http_receipts", "usage"]}
+    danger = json.loads((ROOT / "data/evaluation/danger_probe_live_20261018_summary.json").read_text())
+    assert danger["rows"] == 24
+    danger_sha = digest(ROOT / "data/evaluation/danger_probe_live_20261018_runs.jsonl")
+    assert danger_sha == danger["raw_sha256"]
+    rechecks = json.loads((ROOT / "data/evaluation/danger_probe_model_call_recheck_20261018.json").read_text())
+    assert rechecks["source_raw_sha256"] == danger_sha and rechecks["new_model_calls"] == 0
+    assert len(rechecks["checks"]) == 5 and all(c["decision"]["decision"] == "block" for c in rechecks["checks"])
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     stage = OUT / "package-stage" / stamp / "神盾AEGIS"
     stage.mkdir(parents=True, exist_ok=False)
@@ -66,7 +73,10 @@ def main() -> None:
             copy(path)
     for name in ["paired_manifest.json", "paired_replay_runs.jsonl", "paired_replay_summary.json",
                  "paired_live_runs.jsonl", "paired_live_summary.json", "injecagent_adapted_cases.json",
-                 "LICENCE_InjecAgent.txt", "development_live_incident.json", "development_live_interrupted_runs.jsonl"]:
+                 "LICENCE_InjecAgent.txt", "development_live_incident.json", "development_live_interrupted_runs.jsonl",
+                 "danger_probe_cases_20261018.json", "danger_probe_protocol_20261018.json",
+                 "danger_probe_preflight_20261018_runs.jsonl", "danger_probe_live_20261018_runs.jsonl",
+                 "danger_probe_live_20261018_summary.json", "danger_probe_model_call_recheck_20261018.json"]:
         copy(ROOT / "data/evaluation" / name)
     copy(OUT / "demo/paired_eval.html")
     for kind, ext in [("pdf", "pdf"), ("docx", "docx")]:
@@ -77,6 +87,7 @@ def main() -> None:
         "完整作品文档在output/pdf和output/docx；两种格式同源。\n"
         "历史 MiniMax 实测证据在 data/corpus；新攻防对照、原始回执和公开来源许可在 data/evaluation。\n"
         "打开 output/demo/paired_eval.html 查看离线对照；现场演示与源码讲解见 docs。\n"
+        "页面分别展示原始两层对照、危险调用直接控制与间接探索，以及五类模型参数离线复核。\n"
         "未完成的 Kimi 记录不进入本包。不含实际 API 密钥。\n"
         f"已验证代码基线：{review['code_revision']}\n"
         "历史实测在交付修复前完成，原始结果不回填修改。\n",
@@ -93,6 +104,8 @@ def main() -> None:
         "historical_model": summary["model"],
         "historical_completed_samples": summary["successful_unique"],
         "paired_evaluation": paired,
+        "danger_probe": {**{k: danger[k] for k in ["rows", "raw_sha256", "http_receipts", "usage"]},
+                         "model_parameter_rechecks": len(rechecks["checks"]), "recheck_model_calls": 0},
         "files": files,
         "exclusions": ["actual keys", ".aegis.local.json", ".env*", ".venv", ".git", "runtime locks", "caches"],
     }

@@ -1,0 +1,25 @@
+{
+  "live_rows": 24,
+  "http_receipts": 54,
+  "unique_response_ids": 54,
+  "api_errors": 0,
+  "total_tokens": 63724,
+  "all_aegis_dangerous_effects": 0,
+  "unguarded_observed_effects_all_allocated": 4,
+  "environment_rejection_events": 8,
+  "incomplete_rows": 2,
+  "model_call_reinspection_blocked": 5,
+  "model_call_reinspection_new_model_requests": 0,
+  "production_code_changed": false,
+  "actual_api_key_scan": "passed",
+  "files": {
+    "data/evaluation/danger_probe_live_20261018_runs.jsonl": "85acdef5ae89fadc349f8618c421b1b4db3536d68c923c4624d45a5248e3ffc6",
+    "data/evaluation/danger_probe_model_call_recheck_20261018.json": "aed2eaf83d27b1f4b42bb26f560e53afde1182bf00bce52d67c4801f7b4308a5",
+    "data/evaluation/danger_probe_live_20261018_summary.json": "731372b21fa08999951792f899ac4fe916899acd105c86115a4e4a0e9231e564",
+    "data/evaluation/danger_probe_cases_20261018.json": "426654bb10da672f7bfa7f2697c032f9f6beb619369bbaae593f2a65a6180b47",
+    "data/evaluation/danger_probe_protocol_20261018.json": "53913aba20f4bd3ac24c607961a91a5af6c8f40fa938a5baa3229a70a9be496a",
+    "data/evaluation/danger_probe_preflight_20261018_runs.jsonl": "2f33b89d3523f81c8ec337435ff792b0fbbfebd07f9b88f81aa1486b86af9ab2",
+    "docs/危险调用探索报告.md": "961619c3a22bfda430dd923d6aba5a5b8587271e20bc940639d3c64c94da5f42",
+    "docs/evidence/danger_probe_20261018_runner.py": "f70554f24da77c452022f3d0e81f1680908a22f8dd184d9ce91fbdc957fc6bc6"
+  }
+}

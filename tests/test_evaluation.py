@@ -131,3 +131,47 @@ def test_cli_does_not_overwrite_a_preexisting_summary(tmp_path):
     output = tmp_path / "paired_runs.jsonl"
     p = subprocess.run([sys.executable,str(script),"--output",str(output)],capture_output=True,text=True)
     assert p.returncode == 2 and summary.read_text() == '"keep"' and not output.exists()
+
+
+def test_summary_separates_observed_effects_from_valid_case_numerator():
+    from aegis.evaluation import summarize
+
+    base = {'case_id': 'one', 'kind': 'attack', 'tool': 'git.push', 'origin': 'test', 'arm': 'unguarded',
+            'goal_success': True, 'dangerous_proposed': True, 'steps': [], 'completed': True, 'error': None}
+    rows = [dict(base, environment_rejections=0), dict(base, case_id='with-rejected-precheck', environment_rejections=1)]
+    attacks = summarize(rows)['arms']['unguarded']['attacks']
+    assert attacks['side_effect_success'] == 2
+    assert attacks['valid_cases'] == 1
+    assert attacks['valid_side_effect_success'] == 1
+    assert attacks['excluded_side_effect_success'] == 1
+    assert attacks['side_effect_rate'] == 1.0
+
+
+def test_archived_demo_loads_danger_controls_separately_without_model_calls(tmp_path, monkeypatch):
+    import importlib.util
+    import re
+    import sys
+    from pathlib import Path
+    from aegis import evaluation
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError('archived demo must not call models or execute tool trajectories')
+    monkeypatch.setattr(evaluation, 'run_suite', forbidden)
+    monkeypatch.setattr(evaluation, 'live_backend_from_env', forbidden)
+    script = Path(__file__).resolve().parents[1] / 'scripts/demo_paired_eval.py'
+    spec = importlib.util.spec_from_file_location('demo_under_test', script)
+    demo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(demo)
+    output = tmp_path / 'demo.html'
+    monkeypatch.setattr(sys, 'argv', [str(script), '--output', str(output)])
+    demo.main()
+    payload = re.search(r'<script id="data" type="application/json">(.*?)</script>', output.read_text(), re.S)[1]
+    data = json.loads(payload)
+    assert set(data) == {'replay', 'live', 'danger_direct', 'danger_indirect'}
+    assert len(data['danger_direct']['rows']) == len(data['danger_indirect']['rows']) == 12
+    arm = data['danger_direct']['summary']['arms']['unguarded']['attacks']
+    assert (arm['side_effect_success'], arm['cases']) == (4, 6)
+    assert (arm['valid_side_effect_success'], arm['valid_cases']) == (3, 5)
+    checks = data['danger_direct']['model_call_rechecks']['checks']
+    assert len(checks) == 5 and all(c['decision']['decision'] == 'block' for c in checks)
+    assert data['danger_direct']['model_call_rechecks']['new_model_calls'] == 0

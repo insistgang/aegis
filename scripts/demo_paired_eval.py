@@ -21,6 +21,14 @@ def main():
         path = ROOT / f"data/evaluation/paired_{label}_runs.jsonl"
         if path.exists():
             datasets[label] = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    danger = ROOT / "data/evaluation/danger_probe_live_20261018_runs.jsonl"
+    rechecks = ROOT / "data/evaluation/danger_probe_model_call_recheck_20261018.json"
+    if danger.exists():
+        rows = [json.loads(line) for line in danger.read_text().splitlines() if line.strip()]
+        for label, layer in [("danger_direct", "direct_synthetic_control"), ("danger_indirect", "indirect_runbook_probe")]:
+            selected = [row for row in rows if row["probe_layer"] == layer]
+            if selected:
+                datasets[label] = selected
     if args.rerun:
         rows = run_suite(backend="scripted", include_external=True)
         path = ROOT / "output/demo" / ("onsite_replay_" + datetime.now().strftime("%Y%m%d_%H%M%S_%f") + ".jsonl")
@@ -30,7 +38,7 @@ def main():
         print("现场重放记录：" + str(path))
     if not datasets:
         parser.error("no archived experiment records found; use --rerun for an offline local replay")
-    render_html(datasets, args.output)
+    render_html(datasets, args.output, model_call_rechecks=json.loads(rechecks.read_text()) if rechecks.exists() else None)
     print("演示页面：" + str(args.output))
 
 
