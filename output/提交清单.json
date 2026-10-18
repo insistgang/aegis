@@ -1,12 +1,12 @@
 {
-  "created_at_utc": "2026-10-18T06:46:33.210141+00:00",
-  "validated_code_revision": "902fce1bbdc95d830774b6a4fe829c06b6cb86da",
+  "created_at_utc": "2026-10-18T12:40:45.876200+00:00",
+  "validated_code_revision": "b98951800a29b09f238bd0c6583d086396711f4d",
   "validation": {
-    "pytest_passed": 10395,
+    "pytest_passed": 10397,
     "scenarios_passed": 31,
     "steps_passed": 91,
-    "pdf_pages": 22,
-    "pdf_visual_reviewed_pages": 22
+    "pdf_pages": 24,
+    "pdf_visual_reviewed_pages": 24
   },
   "historical_model": "MiniMax-M3.1-Flash-Preview",
   "historical_completed_samples": 10000,
@@ -27,6 +27,18 @@
         "completion_tokens": 12491
       }
     }
+  },
+  "danger_probe": {
+    "rows": 24,
+    "raw_sha256": "85acdef5ae89fadc349f8618c421b1b4db3536d68c923c4624d45a5248e3ffc6",
+    "http_receipts": 54,
+    "usage": {
+      "total_tokens": 63724,
+      "prompt_tokens": 54782,
+      "completion_tokens": 8942
+    },
+    "model_parameter_rechecks": 5,
+    "recheck_model_calls": 0
   },
   "files": [
     {
@@ -56,13 +68,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 12790,
-      "sha256": "9738895ff8774a3ffc1a0339c96f2bbc4a0ab571a88dc473ec38def79781ee63"
+      "bytes": 13254,
+      "sha256": "3aeff322dbf6a18eee59f093614e81351950e3d4242245a07cb80b19bbee5100"
     },
     {
       "path": "ROADMAP.md",
-      "bytes": 1643,
-      "sha256": "5b1fab0d1f433887b7256a34f568930ce187fb4843f14b24aff5bc4cbf1b9588"
+      "bytes": 2100,
+      "sha256": "9cbf936b0696b28e2b378ce14206a98c07d32b76ba95595bbd96df11b61a1b4b"
     },
     {
       "path": "data/corpus/injection_10k.jsonl",
@@ -125,6 +137,36 @@
       "sha256": "b48589499dbb84caa796b00b4ea652b0443e49660282c44d890fd473b8c0674e"
     },
     {
+      "path": "data/evaluation/danger_probe_cases_20261018.json",
+      "bytes": 10151,
+      "sha256": "426654bb10da672f7bfa7f2697c032f9f6beb619369bbaae593f2a65a6180b47"
+    },
+    {
+      "path": "data/evaluation/danger_probe_live_20261018_runs.jsonl",
+      "bytes": 469467,
+      "sha256": "85acdef5ae89fadc349f8618c421b1b4db3536d68c923c4624d45a5248e3ffc6"
+    },
+    {
+      "path": "data/evaluation/danger_probe_live_20261018_summary.json",
+      "bytes": 41178,
+      "sha256": "731372b21fa08999951792f899ac4fe916899acd105c86115a4e4a0e9231e564"
+    },
+    {
+      "path": "data/evaluation/danger_probe_model_call_recheck_20261018.json",
+      "bytes": 121589,
+      "sha256": "aed2eaf83d27b1f4b42bb26f560e53afde1182bf00bce52d67c4801f7b4308a5"
+    },
+    {
+      "path": "data/evaluation/danger_probe_preflight_20261018_runs.jsonl",
+      "bytes": 299593,
+      "sha256": "2f33b89d3523f81c8ec337435ff792b0fbbfebd07f9b88f81aa1486b86af9ab2"
+    },
+    {
+      "path": "data/evaluation/danger_probe_protocol_20261018.json",
+      "bytes": 1103,
+      "sha256": "53913aba20f4bd3ac24c607961a91a5af6c8f40fa938a5baa3229a70a9be496a"
+    },
+    {
       "path": "data/evaluation/development_live_incident.json",
       "bytes": 246,
       "sha256": "5ddd13b980d836fcd289ece8284da3df254312f7a4e80a7f05f77e5ab23efa6d"
@@ -166,8 +208,23 @@
     },
     {
       "path": "docs/MiniMax全量实测报告.md",
-      "bytes": 14970,
-      "sha256": "2470a87e3ee8ffb552913b79233f24d23153af96c9150926d42ada76045784c4"
+      "bytes": 15448,
+      "sha256": "e62ebe8c53a34029bf4575ecdce9ace19db739268dcfba0769519ee181145553"
+    },
+    {
+      "path": "docs/evidence/danger_delivery_browser_review.json",
+      "bytes": 825,
+      "sha256": "dadae60390fd7bfde3b0f6a61a5e4d20e54cb0b4e1d1927d4df3ba4eb663f9d3"
+    },
+    {
+      "path": "docs/evidence/danger_probe_20261018_review.json",
+      "bytes": 1454,
+      "sha256": "5163d9806905c49e613af567b8c90f2af0de108b898a02b9ff731eea19ddec99"
+    },
+    {
+      "path": "docs/evidence/danger_probe_20261018_runner.py",
+      "bytes": 2663,
+      "sha256": "f70554f24da77c452022f3d0e81f1680908a22f8dd184d9ce91fbdc957fc6bc6"
     },
     {
       "path": "docs/evidence/minimax_20261018/README.md",
@@ -206,8 +263,8 @@
     },
     {
       "path": "docs/evidence/submission_review.json",
-      "bytes": 1707,
-      "sha256": "b65379df534133d2a128dba2d516e77149467e97d60cd22776d78440488334cd"
+      "bytes": 2249,
+      "sha256": "060d6c93e691475474b59d71ebf37ee4e511ac47fada7bbf40fd2a0cc4a8d4b0"
     },
     {
       "path": "docs/evidence/topic5_defense_demo.json",
@@ -291,18 +348,18 @@
     },
     {
       "path": "docs/交付复核记录.md",
-      "bytes": 5549,
-      "sha256": "c1fe276c7468a2330622ded54938bf86dea83bf62cb96cedf9f488d7a4c15ebe"
+      "bytes": 6733,
+      "sha256": "040873d25993638002323552362f1bc6a8f9017c461d78076081008a205bbeaa"
     },
     {
       "path": "docs/作品提交文档.md",
-      "bytes": 31957,
-      "sha256": "f5e6a42f155487be8da8a03a90c421a7a5f2cfa22d74e721557a3abe3ff454d6"
+      "bytes": 36841,
+      "sha256": "52a2c63601882f0fd37a77d5f0497e43f59a01b2880b635a33d3fd3dec5bb1d5"
     },
     {
       "path": "docs/六项修复验收报告.md",
-      "bytes": 4615,
-      "sha256": "b01a356b6919a35e243029dbdfbecb1ed5f3ed1c0cdc0d2a2618743b7c8d4c29"
+      "bytes": 5018,
+      "sha256": "f77e3333d5ea112bb74079103c49a4aa38b7e916e662bb7d04ccbf76e40001db"
     },
     {
       "path": "docs/六项安全能力修复方案.md",
@@ -310,39 +367,44 @@
       "sha256": "3f1f54373f9dd569779d1f361c595ec5967dc2dee65a7469f7667a7045003e42"
     },
     {
+      "path": "docs/危险调用探索报告.md",
+      "bytes": 6098,
+      "sha256": "961619c3a22bfda430dd923d6aba5a5b8587271e20bc940639d3c64c94da5f42"
+    },
+    {
       "path": "docs/提交文件构建.md",
-      "bytes": 2612,
-      "sha256": "49085955f2cf5ed274776f9c80423d2b9135b317a14f87f9a75c430ba1773f76"
+      "bytes": 2650,
+      "sha256": "4187d59d5dc6f7bfbfe300ecef0c36793a23a5a6bcc0f06d1ac3df95640c0446"
     },
     {
       "path": "docs/攻防对照实验报告.md",
-      "bytes": 8423,
-      "sha256": "5536df8e84cbf5150a32324fee8906a948151d3e069e90e6b11e67d03940ce7c"
+      "bytes": 9012,
+      "sha256": "660e510826556d4efa9b0a81142c6a0e869afd4e3b88a9afc27b3d6de60a6e14"
     },
     {
       "path": "docs/攻防对照补充方案.md",
-      "bytes": 5280,
-      "sha256": "5065a02bf7ebf27b6c63f21214373d368472c7eca4963b5872affc007fe12881"
+      "bytes": 5717,
+      "sha256": "d7abe5f82d62c97e1b20610f7fa41531bf0cf35998fe25bf52b14337abf31c42"
     },
     {
       "path": "docs/测试说明.md",
-      "bytes": 13028,
-      "sha256": "f7e9e7fdc1502643111477c4a0cc682b5842beeafdbd06ca160e0d505ee90430"
+      "bytes": 15027,
+      "sha256": "8955d634def688edf6c23c7eb706db57a5677a890063ee201d281423da681ab0"
     },
     {
       "path": "docs/现场演示与源码讲解.md",
-      "bytes": 5373,
-      "sha256": "82e6663e718c43d230074444b6ce87e0dc7e579318d70ed23ed98d13a9b88000"
+      "bytes": 6152,
+      "sha256": "141de0ababbc376bb76a61815a41acd0d73facae496fdc10e5bb5b8a680b6c4d"
     },
     {
       "path": "docs/设计文档.md",
-      "bytes": 15834,
-      "sha256": "1d3d8b858077d72022a3f35e7c8073b24574fca3d6357e12d26fb15e0e03cb15"
+      "bytes": 16339,
+      "sha256": "e43ea323416fcacd8a56294d2b58e28f4c96845a4f30530be8c5ecb56f1026ef"
     },
     {
       "path": "docs/部署说明.md",
-      "bytes": 14766,
-      "sha256": "c447d708dcb89ff83f8b768a25e559da03fff7bd8ecfc7e05abaaa82e66f787a"
+      "bytes": 15500,
+      "sha256": "aa13c64ac8fedca1386e9fe5bcdc395b2bf18ab2e1c704ea5f6bf7628eb7650b"
     },
     {
       "path": "examples/fake_mcp.py",
@@ -356,18 +418,18 @@
     },
     {
       "path": "output/demo/paired_eval.html",
-      "bytes": 1391735,
-      "sha256": "d5de8ad68385129b550560d0811429bb053e23e6283fd890827541630803a2bf"
+      "bytes": 1878493,
+      "sha256": "611bb10aafd32fe1cc72b535815fdc9951d307edb78fa510d12bc9d741f37c45"
     },
     {
       "path": "output/docx/尹纪元+神盾AEGIS+作品文档.docx",
-      "bytes": 671586,
-      "sha256": "50fd2dee17ac88f95be75fe90f51089bdb89d4f86bd629862db88ec844e67788"
+      "bytes": 674495,
+      "sha256": "42e28648cf43608bd3fd89d929fe6a80adec55c6081250ebb53b0f79ef248e02"
     },
     {
       "path": "output/pdf/尹纪元+神盾AEGIS+作品文档.pdf",
-      "bytes": 1140090,
-      "sha256": "adad416704f0430dc21b817a43f763c5d305ed8c47c57826eb100c18819d7808"
+      "bytes": 1211058,
+      "sha256": "7d4c0068d82637ca0d43a906bfdc325ba010a29c1b03951c922213d08f9ddf87"
     },
     {
       "path": "pyproject.toml",
@@ -386,13 +448,13 @@
     },
     {
       "path": "scripts/demo_paired_eval.py",
-      "bytes": 1561,
-      "sha256": "411940ac22742f861a8792f9dee5054d8289eae680f482eeb553eadd5ac23e50"
+      "bytes": 2194,
+      "sha256": "71921893adc7c670efeab729c0803af02e3957885ea37453666ba0fc347ae85a"
     },
     {
       "path": "scripts/package_submission.py",
-      "bytes": 6244,
-      "sha256": "32071f0b1d67957dc28e83fd7707c5647c95c4b31683bf7604a7b9e61db7baa7"
+      "bytes": 7476,
+      "sha256": "8902a314cbca218666f6c1b99aba4db86e423051f61cfeea6feb8f0fb7299475"
     },
     {
       "path": "scripts/run_kimi_corpus.py",
@@ -456,8 +518,8 @@
     },
     {
       "path": "src/aegis/eval_report.py",
-      "bytes": 8091,
-      "sha256": "1085027c07c5ace86bb513b9e791140cf5ccb39d3851e5f185f1235dc0d33d2a"
+      "bytes": 9685,
+      "sha256": "93fa3f229eeb73c08d21d7f29e5ace4a8090052d511cf1acaa38da9f32da6703"
     },
     {
       "path": "src/aegis/eval_tools.py",
@@ -466,8 +528,8 @@
     },
     {
       "path": "src/aegis/evaluation.py",
-      "bytes": 16542,
-      "sha256": "77e6f38467f9493efbce87bce1441ed690e61b27370b126ff5e16ca77e634732"
+      "bytes": 16795,
+      "sha256": "cba1124a54aea4fdd81c85e1ae2b3b60e7cfd13e456c35fe30a9ad8380e03a43"
     },
     {
       "path": "src/aegis/explain.py",
@@ -626,8 +688,8 @@
     },
     {
       "path": "tests/test_evaluation.py",
-      "bytes": 6493,
-      "sha256": "d367659126b5acaa60c90d8737f2d6c91916844595d4c9bbb74491d3cdd393ab"
+      "bytes": 8875,
+      "sha256": "44625a7b02294125794f30df10d3b031dd9d92a8c8ad8f2b135b608eec731aa0"
     },
     {
       "path": "tests/test_evaluation_intent.py",
@@ -706,8 +768,8 @@
     },
     {
       "path": "交付说明.txt",
-      "bytes": 624,
-      "sha256": "8063aa30f08ca61b7746b915c0221801f425cac4a49c3c67d7ea73b4a71d7f42"
+      "bytes": 745,
+      "sha256": "f9819ad363a1a6489e3d1f5eb511bb55fb0b0b7ab1497e808ef764aa6a8e9310"
     }
   ],
   "exclusions": [
@@ -721,8 +783,8 @@
   ],
   "archive": {
     "path": "尹纪元+神盾AEGIS+可执行程序.zip",
-    "bytes": 7199643,
-    "sha256": "0dbda8715118c166aa7999ea53e78a1964e507249025acf2db17cb2dec6062a7"
+    "bytes": 7433159,
+    "sha256": "640d9a0134aa3dbaf78f706aa7af716f05e39521a1912c11c31c91b88fa514ce"
   },
-  "package_source_directory": "output/package-stage/20261018T064633Z/神盾AEGIS"
+  "package_source_directory": "output/package-stage/20261018T124045Z/神盾AEGIS"
 }
