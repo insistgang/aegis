@@ -1,0 +1,26 @@
+{
+  "pytest_passed": 10136,
+  "pytest_seconds": 20.95,
+  "scenarios_passed": 31,
+  "steps_passed": 91,
+  "review_date_bjt": "2026-10-18",
+  "external_model_called": false,
+  "historical_full_run_unchanged": true,
+  "code_revision": "4b999ca9b4557be6c1ace27c99cdd0d8caae4978",
+  "pdf_pages": 18,
+  "pdf_visual_reviewed_pages": 18,
+  "docx_pdf_same_source": true,
+  "pdf_blank_pages": 0,
+  "original_submission_backup": "../.tmp/aegis-submission-20261018",
+  "package_validation": {
+    "source_import_verified": true,
+    "pytest_passed": 10136,
+    "pytest_seconds": 20.43,
+    "scenarios_passed": 31,
+    "steps_passed": 91,
+    "archive_crc": "ok",
+    "manifest_hashes": "all_verified",
+    "actual_credential_matches": 0,
+    "broken_local_markdown_links": 0
+  }
+}

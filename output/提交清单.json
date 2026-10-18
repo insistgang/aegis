@@ -1,0 +1,505 @@
+{
+  "created_at_utc": "2026-10-18T04:56:38.125516+00:00",
+  "validated_code_revision": "4b999ca9b4557be6c1ace27c99cdd0d8caae4978",
+  "validation": {
+    "pytest_passed": 10136,
+    "scenarios_passed": 31,
+    "steps_passed": 91,
+    "pdf_pages": 18,
+    "pdf_visual_reviewed_pages": 18
+  },
+  "historical_model": "MiniMax-M3.1-Flash-Preview",
+  "historical_completed_samples": 10000,
+  "files": [
+    {
+      "path": ".github/workflows/test.yml",
+      "bytes": 308,
+      "sha256": "d5d6fafc3e9f5750433e7af0793bf2e9425794978667e24e9ee04794d5f06eaf"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 200,
+      "sha256": "e849559606224eb626c74d174d977e1c9dc4545e53b87b84732abf1be6e6f852"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 210,
+      "sha256": "504d94f91e0efb241ea2e7ff5a679e69c9eaf0c4d5872b65c4121ef5d16bea75"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1075,
+      "sha256": "7904ea0bc4fe9ea20ab61c2ea402aae14f45cf2ddf8166e81cebf52e7f26b59f"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 242,
+      "sha256": "a9d5ae395bf31aeba09e8c7f163eb77009fb6d60fcc122cd5cf8098a07effae3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11078,
+      "sha256": "63299b7abb3257a091d413f00c3dbdd8d970776eb2b2c9c831457e565c6844d0"
+    },
+    {
+      "path": "data/corpus/injection_10k.jsonl",
+      "bytes": 3592288,
+      "sha256": "fc0a5ddd64d0ae44f04401e24b3d9877a15f46a28e54b1e0e12a2a25c4899ff8"
+    },
+    {
+      "path": "data/corpus/kimi_runs.jsonl",
+      "bytes": 1310877,
+      "sha256": "6c7b8424a7293a8afd01359718188a482f46d773efadd3bca3047cc34d94311b"
+    },
+    {
+      "path": "data/corpus/manifest.json",
+      "bytes": 375,
+      "sha256": "69ad70be07fc9e8bfd299c5dfed49da047f5695863ea5ea247660c40372aaa75"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_progress.json",
+      "bytes": 1216,
+      "sha256": "701746fb2ed0336e09577f8a88b7db41cbfe3220374c30bc42f5155378f0d204"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_runs.jsonl",
+      "bytes": 19586643,
+      "sha256": "375542219cd0630465ff0fa93b8258bed66335b08a02876b13065ff9c6a9a3d9"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_smoke_runs.jsonl",
+      "bytes": 2465,
+      "sha256": "92d064c6377137b07cb55314d637925d19c639c445bce264e98da4689de73eab"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_speed_tuning.json",
+      "bytes": 427,
+      "sha256": "5e8c22b970c0b4a8025cef6444a5105ec89e0f81321ac440b43be0e9bee02ff2"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_stratified_100_manifest.json",
+      "bytes": 2260,
+      "sha256": "499a55b0ae50a7bd00940456132296401bca58f26e97f4edf1148b18fa4adc11"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_stratified_100_runs.jsonl",
+      "bytes": 189757,
+      "sha256": "a1cef6341faa7d0e24b0e9168dbfee312fc70e3d0efc2b6b53b27c039d7a008a"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_stratified_100_summary.json",
+      "bytes": 496,
+      "sha256": "0d191fd5c8bacc7d5abd7515785e9721c14c9d4ea755c977a424cb52ae876f1c"
+    },
+    {
+      "path": "data/corpus/minimax_m3_1_flash_preview_summary.json",
+      "bytes": 6256,
+      "sha256": "794c5066e0d6b771db835a01ba429e482e615096cd07eaad290fdb9d032a9a44"
+    },
+    {
+      "path": "data/corpus/row_oracle.json",
+      "bytes": 289921,
+      "sha256": "d90457fa5175632255e560302b7a743881b38edfb56e0350cc16bd432697e9b2"
+    },
+    {
+      "path": "docs/MiniMax全量实测报告.md",
+      "bytes": 14371,
+      "sha256": "1f8101ccda4b4e7e63f2af48af691a8b327cb4ca725e6f5409357757cd23746c"
+    },
+    {
+      "path": "docs/evidence/minimax_20261018/README.md",
+      "bytes": 2020,
+      "sha256": "ad8c2a3b96cbce06d4a084c8d33e0eca354c8e1106f80ee001afc61332fddfd9"
+    },
+    {
+      "path": "docs/evidence/minimax_20261018/full_runner_snapshot.py.txt",
+      "bytes": 10227,
+      "sha256": "f1f6ba18565e2653743aa36db5ece121de12bb7e4cb7402e0e260783b62aa41c"
+    },
+    {
+      "path": "docs/evidence/minimax_20261018/manifest.json",
+      "bytes": 449,
+      "sha256": "87d98d6e1e1069e5c066c8d6a6cc3b23dfb8801ad7ebb498a5b305c005902b51"
+    },
+    {
+      "path": "docs/evidence/minimax_20261018/watcher_snapshot.py.txt",
+      "bytes": 9605,
+      "sha256": "34b8093f0a165bfbba96369f4af3016debd622ca0c3f09ef3b28ede326d5c265"
+    },
+    {
+      "path": "docs/evidence/submission_review.json",
+      "bytes": 769,
+      "sha256": "ec394135cfd8ef9917bbe056e32b266a17b30f6821c422a460c234a4422d7ccd"
+    },
+    {
+      "path": "docs/figures/26.png",
+      "bytes": 85710,
+      "sha256": "976791326da965d4884069c916fe33344da09464b163e8a0d856988a8ee4229e"
+    },
+    {
+      "path": "docs/figures/27.png",
+      "bytes": 46871,
+      "sha256": "8dbeac83f567131116433d5238a337215379b63f035bc0fa0e5cca55c790a48d"
+    },
+    {
+      "path": "docs/figures/28.png",
+      "bytes": 98380,
+      "sha256": "4d76e837859c824174572e7ec7927d1fab3eb07377ca350ce9500a145ca3bfbf"
+    },
+    {
+      "path": "docs/figures/29.png",
+      "bytes": 58634,
+      "sha256": "32a794d9b1cce2549ceff8f73f115cd57973c551149f304ea6064b83203d4870"
+    },
+    {
+      "path": "docs/figures/30.png",
+      "bytes": 88744,
+      "sha256": "7431d6304fbdcf2c1518c18abf73962ef827ccc1c5dd5b77284a58cca312352f"
+    },
+    {
+      "path": "docs/figures/31.png",
+      "bytes": 63091,
+      "sha256": "c725d1d52944d3d6711b902bea4e7b9259521bded5a5a2073f1cd0d5a8ea9cf1"
+    },
+    {
+      "path": "docs/figures/32.png",
+      "bytes": 56308,
+      "sha256": "894324bd86696a634a011e0452b447de6831407dc031cf87e660d08a64fff5e0"
+    },
+    {
+      "path": "docs/figures/33.png",
+      "bytes": 81577,
+      "sha256": "96cd861728499d41fa01d107c632d43b1b8473480aa32519bba8958d6df47081"
+    },
+    {
+      "path": "docs/figures/submission_architecture.png",
+      "bytes": 120328,
+      "sha256": "8bf8f379489c94f460728a1497df3e8604cbbd530be964802eb23732c8f62077"
+    },
+    {
+      "path": "docs/figures/submission_character_recall.png",
+      "bytes": 47754,
+      "sha256": "732425c13d60bce4406616b25b907fb0e39b127deff7db113d68f9999ba582e5"
+    },
+    {
+      "path": "docs/figures/submission_content_verdicts.png",
+      "bytes": 55168,
+      "sha256": "e907c6d2d45cdcc11fa03acc310f77cf12dacb9f83ebf95e4a830e2e55a506aa"
+    },
+    {
+      "path": "docs/figures/submission_data_split.png",
+      "bytes": 51671,
+      "sha256": "7f02f4cdd6cd8df7f90e7e0ca3e13a56b5dfe7f6cf2051f9f070379a6b398d0a"
+    },
+    {
+      "path": "docs/figures/submission_evidence.png",
+      "bytes": 81141,
+      "sha256": "44457f001a29caaeb730e396421cddcb708a7da2170d57de3445e2768ab5d9d6"
+    },
+    {
+      "path": "docs/figures/submission_family_counts.png",
+      "bytes": 42708,
+      "sha256": "d5dd43aa5ee5632ab805d4be201deaaa7865cbcb254fd913e68ff2390252a946"
+    },
+    {
+      "path": "docs/交付复核记录.md",
+      "bytes": 3459,
+      "sha256": "a304a27bda9e241ec46d8507238d31ffd1953796d772c737700fcade2fe9b76a"
+    },
+    {
+      "path": "docs/作品提交文档.md",
+      "bytes": 24796,
+      "sha256": "2337a7b9218ec0f4ebdc42b3631331abad919407ff4468012d1cdb77267326c7"
+    },
+    {
+      "path": "docs/提交文件构建.md",
+      "bytes": 2632,
+      "sha256": "ffbc1528ee964de9045e38a09bb6e65578237d952d92664d406b90c0df7b3685"
+    },
+    {
+      "path": "docs/测试说明.md",
+      "bytes": 12150,
+      "sha256": "9ab82ac52031b1d101517ebb648e24971719223c7c478f01d227df6a87e10c15"
+    },
+    {
+      "path": "docs/设计文档.md",
+      "bytes": 14283,
+      "sha256": "0785e51032cfc56eea10527423c6ced390353a5a059c9e47413481c8360d3eae"
+    },
+    {
+      "path": "docs/部署说明.md",
+      "bytes": 12996,
+      "sha256": "4845aa0c2c2dc0e7aa6314692d5914a9678c1f0d219fae5618eb0b39de478f3f"
+    },
+    {
+      "path": "examples/fake_mcp.py",
+      "bytes": 2736,
+      "sha256": "1a28244d61553b89d1a7c84f2e2887b62e5effb892c059e9cc2e697719045ab8"
+    },
+    {
+      "path": "output/docx/尹纪元+神盾AEGIS+作品文档.docx",
+      "bytes": 396704,
+      "sha256": "a152e4cd67d9b9db99ff065d1fecd0861e6b6caf896283a3d170129ecb2dae2b"
+    },
+    {
+      "path": "output/pdf/尹纪元+神盾AEGIS+作品文档.pdf",
+      "bytes": 1027074,
+      "sha256": "8277e863b80acf648daf4212e4b34bf3d38778a554a03f5d2e4a9412d6b75640"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 650,
+      "sha256": "ee71d5957ebb4313b4587cbbb13042c9121bf8b28b3ebd7b9f9362881d500e08"
+    },
+    {
+      "path": "scripts/build_injection_corpus.py",
+      "bytes": 44482,
+      "sha256": "d02a2a900a03508ce96aaacb24afce183e13feca3b4e654fb0dccbc3d57de4f0"
+    },
+    {
+      "path": "scripts/build_submission.py",
+      "bytes": 17033,
+      "sha256": "aceb5b03d988b1e857dfac2ea3301108e136133ace3f2ca780b9ac0a74a5d9bc"
+    },
+    {
+      "path": "scripts/package_submission.py",
+      "bytes": 4921,
+      "sha256": "feb7e7f232fdcf2578671a6ca743dbe7297c150093feafd471514a26fe25344c"
+    },
+    {
+      "path": "scripts/run_kimi_corpus.py",
+      "bytes": 6703,
+      "sha256": "2741f05172b328c4ff58664e58ff71ad32f02af0870fdfa0da8d985b0d4b1dae"
+    },
+    {
+      "path": "scripts/train_injection_model.py",
+      "bytes": 7977,
+      "sha256": "ea705f5da7cd408f7c4eb9ee5cb48b2c6fac8030268e5643be6e1ae50cd185e2"
+    },
+    {
+      "path": "src/aegis/__init__.py",
+      "bytes": 195,
+      "sha256": "cf1ff869aec24034ccd3ecd0780ebdce17cbda8764dd9a08ec9a850ad36a2b2b"
+    },
+    {
+      "path": "src/aegis/__main__.py",
+      "bytes": 6090,
+      "sha256": "e24e1af20f0c3149dfc3b59480a853085bd7a86e286dbac003023a2cbb8d3b83"
+    },
+    {
+      "path": "src/aegis/agent.py",
+      "bytes": 19762,
+      "sha256": "4a0ab04ff7bb5f35d8480794920298cfe9448be5fc955773db584d15746f6907"
+    },
+    {
+      "path": "src/aegis/audit.py",
+      "bytes": 19320,
+      "sha256": "668f3df6770ab1a1834c76a409063e9d9b760f0081ed15c4161b986ab143a5d4"
+    },
+    {
+      "path": "src/aegis/data/default.yaml",
+      "bytes": 4820,
+      "sha256": "b08d5023f48439d4b5b3cffc7c44ecde1eb9872fa489b71f31faf467150f3925"
+    },
+    {
+      "path": "src/aegis/data/injection_model.json",
+      "bytes": 22950,
+      "sha256": "8a0a5faba9be76c6f0262bead15c777237f63316f58789e9bddc236c64fc18d3"
+    },
+    {
+      "path": "src/aegis/detect.py",
+      "bytes": 9635,
+      "sha256": "6762e9229a1b5d067e7f6b379a45ec926a25c7437fb4316679d57a582483ea73"
+    },
+    {
+      "path": "src/aegis/explain.py",
+      "bytes": 5346,
+      "sha256": "fa69aea6f2037e5e6b446e0dcc71fe0150a8a3b508766dff0a3d39147129f85c"
+    },
+    {
+      "path": "src/aegis/features.py",
+      "bytes": 5126,
+      "sha256": "71c1a71f2c43ae958b4f3695ab8f8248fd37f31ddfbb045d05b155951e65fca6"
+    },
+    {
+      "path": "src/aegis/framing.py",
+      "bytes": 922,
+      "sha256": "7ba81259fffb4c2c4c8654bd05ebb42082e493bca4c25d18e220658f0047a669"
+    },
+    {
+      "path": "src/aegis/guard.py",
+      "bytes": 24318,
+      "sha256": "7957207f6b08ea60a06f3289ee86b3838b91eab17dd174678ec483e2c95844f5"
+    },
+    {
+      "path": "src/aegis/intent.py",
+      "bytes": 2626,
+      "sha256": "1ad1e887523ffeb2e8ae7a0ef23e5bbfb415ac495327a83262ceef7429d37159"
+    },
+    {
+      "path": "src/aegis/mcp_gate.py",
+      "bytes": 10798,
+      "sha256": "75be576546ce963df8c8537d934c449581caff6967410846452c31cea1395e92"
+    },
+    {
+      "path": "src/aegis/model.py",
+      "bytes": 2128,
+      "sha256": "c4f719d7a3ea89b4613c8b837ce18543882e98284dd911858cae947cfd83135f"
+    },
+    {
+      "path": "src/aegis/models.py",
+      "bytes": 3884,
+      "sha256": "df001438b436799293e7e0042b855e24dbe50966eb113e0f7bed9ded400b56c8"
+    },
+    {
+      "path": "src/aegis/normalize.py",
+      "bytes": 5970,
+      "sha256": "2ddcee8f4470164156e325242646d91d5d0249c082b297d3dca02432db9ad7e7"
+    },
+    {
+      "path": "src/aegis/paths.py",
+      "bytes": 3071,
+      "sha256": "0ceabba4e3bd7ebcc10535606c608fa43d4fe28ffad52672ce0b8d05a03f9191"
+    },
+    {
+      "path": "src/aegis/policy.py",
+      "bytes": 8132,
+      "sha256": "c37be71e2cf0ccaabf2fca8376cea07bb231948ad129d9fed73c0b2c33b8b568"
+    },
+    {
+      "path": "src/aegis/proxy.py",
+      "bytes": 8118,
+      "sha256": "dae35b645e72f9cd06cf798ab53794fff6d46329834424eca3d67393cf856466"
+    },
+    {
+      "path": "src/aegis/redact.py",
+      "bytes": 1921,
+      "sha256": "922e112bc10a5a0e44682ffb4c2778f53cec0bde97864ee58fa2018ca5351577"
+    },
+    {
+      "path": "src/aegis/runner.py",
+      "bytes": 2559,
+      "sha256": "86141e0ea399418f2817f8ba3604e9a98e42a3c8a1921a88b1efaa2ac6664a8b"
+    },
+    {
+      "path": "src/aegis/scenarios.py",
+      "bytes": 21831,
+      "sha256": "6d8f4c0f711dd854d75e1665af3704e3878d9ef7dfeadfb6816857ae3a05a386"
+    },
+    {
+      "path": "src/aegis/serve.py",
+      "bytes": 12207,
+      "sha256": "96244cfd6b8990cb5a504d3914bd834c0fdf89156d873b03e81836edd27b863a"
+    },
+    {
+      "path": "src/aegis/session.py",
+      "bytes": 1153,
+      "sha256": "12c4063cfe01225b2d0bdd83d5a8b3ef91c7911b9c51df0b1f00c8bf670a53c9"
+    },
+    {
+      "path": "src/aegis/shell.py",
+      "bytes": 3723,
+      "sha256": "d09c0a357779fc64ce3b6bfc9a4b5804c4caf2d3535c350ffb2c99ff9c3a22a8"
+    },
+    {
+      "path": "src/aegis/trace.py",
+      "bytes": 5323,
+      "sha256": "dfca33a87a07984ffd3a6f6a17132014594503cc207aa1da4a789ab097cf21a4"
+    },
+    {
+      "path": "src/aegis/victim.py",
+      "bytes": 9558,
+      "sha256": "14b397d246ffdab3714d3ece1207a92751ce0b875bca186c05409d0139a5f84b"
+    },
+    {
+      "path": "src/aegis/web/index.html",
+      "bytes": 21477,
+      "sha256": "55d00c58d357d7a92b86a126ae94ac051a0837aa51d0c69ad0b2141da261d139"
+    },
+    {
+      "path": "tests/corpus_checks.py",
+      "bytes": 1516,
+      "sha256": "662cbe3a25410897eff42d00ac7cc085ec6adca6b6d65e30ded220922ec943ef"
+    },
+    {
+      "path": "tests/test_audit.py",
+      "bytes": 3648,
+      "sha256": "9bc01b7ed69b5fa2ee509ea3c4d91b2dfc18f37726aca0727c627816376ddf2a"
+    },
+    {
+      "path": "tests/test_cli_completion.py",
+      "bytes": 744,
+      "sha256": "1b35354441ea7000b9ec71d1b6faca5d9fba8c0bd595ff065929ae4f9b0ebb6e"
+    },
+    {
+      "path": "tests/test_corpus_rows.py",
+      "bytes": 1963,
+      "sha256": "4d3a6b8367e47f4c3bd8dc12d49f69449b662c8a521f0359234328fd5ed272c4"
+    },
+    {
+      "path": "tests/test_engine.py",
+      "bytes": 5812,
+      "sha256": "7bb95b26fcdfd7f839848b2205879290710d4a5f5d92055f22e47c0e38d94a3b"
+    },
+    {
+      "path": "tests/test_llm_config.py",
+      "bytes": 15710,
+      "sha256": "9e8fbb0f44afd2bfb57a536174c134831fe188d723b0d93fd200438999e76e92"
+    },
+    {
+      "path": "tests/test_model.py",
+      "bytes": 3459,
+      "sha256": "49cb5eaa6400e3600da1b9ed1c768bf3b7dbef6e02fea39c7b869e7577f134d3"
+    },
+    {
+      "path": "tests/test_multi_mcp.py",
+      "bytes": 6767,
+      "sha256": "b47d25d9f8a438d7ce9b71d3c640e7c12922e5e0dcbdba7c6f51951950894470"
+    },
+    {
+      "path": "tests/test_proxy_and_panel.py",
+      "bytes": 7373,
+      "sha256": "7bebeb927a0308707af05553ced72166499f5d6fda913dc02d5242f49c52ae09"
+    },
+    {
+      "path": "tests/test_scan_and_panel.py",
+      "bytes": 3963,
+      "sha256": "4f18717c61bc8958f070a46ba5a14731bc22381f30a6dfedd4f426a98147888c"
+    },
+    {
+      "path": "tests/test_security_review.py",
+      "bytes": 5315,
+      "sha256": "9daf93c5baceb8deb83f1ea39a68da45016d278efcba1ea3bb54b979eb2b830e"
+    },
+    {
+      "path": "tests/test_tool_agent.py",
+      "bytes": 6169,
+      "sha256": "428beda6f9d51606454b99498eb2eb8268c61e845b2450ac610d0db886e757df"
+    },
+    {
+      "path": "tests/test_victim_agent.py",
+      "bytes": 4289,
+      "sha256": "92b83539f38e97a0625b944dfe3658add5ecdf12591989cbc7a6d3d11ce502f8"
+    },
+    {
+      "path": "交付说明.txt",
+      "bytes": 420,
+      "sha256": "2fc36a89cfe3ac255d3e3d6cb01e425edda71edc6fddb4a1716807f98fa3e302"
+    }
+  ],
+  "exclusions": [
+    "actual keys",
+    ".aegis.local.json",
+    ".env*",
+    ".venv",
+    ".git",
+    "runtime locks",
+    "caches"
+  ],
+  "archive": {
+    "path": "尹纪元+神盾AEGIS+可执行程序.zip",
+    "bytes": 6545858,
+    "sha256": "428e9f17f9c4518954fbe234286273d23f7960a6b3a169fc1d84f1789cd72325"
+  },
+  "package_source_directory": "output/package-stage/20261018T045638Z/神盾AEGIS"
+}

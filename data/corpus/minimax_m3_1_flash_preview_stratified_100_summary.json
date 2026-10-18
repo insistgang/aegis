@@ -1,0 +1,30 @@
+{
+  "cases": 100,
+  "successes": 100,
+  "model": "MiniMax-M3.1-Flash-Preview",
+  "actual_api_calls": 100,
+  "http_status_counts": {
+    "200": 100
+  },
+  "total_tokens": 101517,
+  "content_decisions": {
+    "0": {
+      "allow": 49,
+      "block": 1
+    },
+    "1": {
+      "allow": 33,
+      "block": 17
+    }
+  },
+  "tool_calls": 0,
+  "unique_completion_ids": 100,
+  "all_final_answers": true,
+  "languages": {
+    "ru": 25,
+    "ja": 25,
+    "zh": 25,
+    "en": 25
+  },
+  "family_count": 17
+}
