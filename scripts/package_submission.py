@@ -21,7 +21,9 @@ def digest(path: Path) -> str:
 def main() -> None:
     review = json.loads((ROOT / "docs/evidence/submission_review.json").read_text())
     summary = json.loads((ROOT / "data/corpus/minimax_m3_1_flash_preview_summary.json").read_text())
-    assert review["pytest_passed"] == 10136 and review["pdf_visual_reviewed_pages"] == 18
+    assert review["pytest_passed"] > 10000 and review["scenarios_passed"] == 31 and review["steps_passed"] == 91
+    assert review["pdf_pages"] > 0 and review["pdf_visual_reviewed_pages"] == review["pdf_pages"]
+    assert len(review["code_revision"]) == 40 and all(c in "0123456789abcdef" for c in review["code_revision"])
     assert summary["successful_unique"] == 10000 and summary["unresolved_failed_unique"] == 0
     assert digest(ROOT / "data/corpus/minimax_m3_1_flash_preview_runs.jsonl") == summary["raw_results_sha256"]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -37,7 +39,7 @@ def main() -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, target)
 
-    for name in ["README.md", "LICENSE", "pyproject.toml", "Dockerfile", "Makefile", ".gitignore"]:
+    for name in ["README.md", "ROADMAP.md", "LICENSE", "pyproject.toml", "Dockerfile", "Makefile", ".gitignore"]:
         copy(ROOT / name)
     for directory in ["src", "tests", "scripts", "docs", "examples", ".github"]:
         for path in sorted((ROOT / directory).rglob("*")):
@@ -54,7 +56,7 @@ def main() -> None:
     for path in sorted((ROOT / "data/corpus").iterdir()):
         if not path.is_file() or path.suffix not in {".json", ".jsonl"}:
             continue
-        if path.name in {"injection_10k.jsonl", "row_oracle.json", "manifest.json", "kimi_runs.jsonl"} or path.name.startswith("minimax_m3_1_flash_preview_"):
+        if path.name in {"injection_10k.jsonl", "row_oracle.json", "manifest.json"} or path.name.startswith("minimax_m3_1_flash_preview_"):
             copy(path)
     for kind, ext in [("pdf", "pdf"), ("docx", "docx")]:
         copy(OUT / kind / f"尹纪元+神盾AEGIS+作品文档.{ext}")
@@ -62,7 +64,7 @@ def main() -> None:
         "神盾 AEGIS Python可运行源码提交包\n"
         "需要Python 3.11及以上；安装与验证见README。不是Windows独立编译程序。\n"
         "完整作品文档在output/pdf和output/docx；两种格式同源。\n"
-        "原始MiniMax及Kimi实测证据保存在data/corpus，不含实际API密钥。\n"
+        "原始 MiniMax 实测证据保存在 data/corpus。未完成的 Kimi 记录不进入本包。不含实际 API 密钥。\n"
         f"已验证代码基线：{review['code_revision']}\n"
         "历史实测在交付修复前完成，原始结果不回填修改。\n",
         encoding="utf-8",

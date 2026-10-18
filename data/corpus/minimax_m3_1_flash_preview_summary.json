@@ -254,5 +254,15 @@
     "review_date_bjt": "2026-10-18",
     "external_model_called": false,
     "historical_full_run_unchanged": true
+  },
+  "latest_offline_validation": {
+    "code_revision": "91e2680961b3e55a19b3b37b30268a7845c299b4",
+    "pytest_passed": 10348,
+    "scenarios_passed": 31,
+    "steps_passed": 91,
+    "six_issue_repairs": true,
+    "external_model_called": false,
+    "report": "docs/六项修复验收报告.md",
+    "historical_model_statistics_unchanged": true
   }
 }
