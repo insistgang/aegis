@@ -164,6 +164,7 @@ def analyze(text: str, channel: str, source_id: str) -> Analysis:
 
 _NEGATION = ("不要", "别把", "请勿", "禁止", "不能", "not ", "don't", "do not", "never ")
 _CLAUSE_BREAK = re.compile(r"[;；,，!?。！？\r\n]|\.(?=\s|$)")
+_TRANSFER_ACTION = re.compile(r"\b(?:send|upload|post|exfiltrate|transmit)\b|发送|外发|同步|上传|传出", re.I)
 
 
 def _negated(view: str, start: int) -> bool:
@@ -185,7 +186,9 @@ def _scan_view(
         cursor = 0
         while match := pattern.search(view, cursor):
             cursor = match.end()
-            if family == "secret_exfil" and _negated(view, match.start()):
+            actions = list(_TRANSFER_ACTION.finditer(view, match.start(), match.end())) if family == "secret_exfil" else []
+            negated_action = bool(actions) and all(_negated(view, action.start()) for action in actions)
+            if family == "secret_exfil" and (_negated(view, match.start()) or negated_action):
                 # A greedy negated match may also contain a later positive action.
                 boundary = _CLAUSE_BREAK.search(view, match.start(), match.end())
                 if boundary is not None:

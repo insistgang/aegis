@@ -15,6 +15,10 @@ _OPS = re.compile(r"(部署|deploy|运行.{0,12}测试|run the tests|排查)")
 _READ = re.compile(r"(readme|文档|总结用法|读一下)")
 _QUERY = re.compile(r"(查询|查找资料|lookup)")
 _ISSUE = re.compile(r"(\bissue\b|\bpull request\b|\bpr\b)")
+_EXPLICIT_EDIT = re.compile(r"^\s*(?:please\s+)?(?:write|save|create|update)\b", re.I)
+_EXPLICIT_CHECK = re.compile(r"^\s*(?:please\s+)?run\b.{0,100}(?:scripts/[^\s`]+|local check|tests?)", re.I)
+_EXPLICIT_HEALTH = re.compile(r"^\s*(?:please\s+)?(?:check|fetch|query|request)\b.{0,100}\bhealth\b", re.I)
+_EXPLICIT_CONFIG = re.compile(r"^\s*(?:please\s+)?(?:check|verify|inspect|diagnose)\b.{0,100}(?:configuration|credentials?|\.env\b)", re.I)
 
 
 def classify(text: str) -> Intent:
@@ -22,16 +26,16 @@ def classify(text: str) -> Intent:
     if _SHIP.search(folded) and not _NO_PUSH.search(folded):
         return Intent.SHIP
     review = _REVIEW.search(folded) is not None
-    edit = _EDIT.search(folded) is not None
+    edit = _EDIT.search(folded) is not None or _EXPLICIT_EDIT.search(folded) is not None
     if review and not edit:
         return Intent.CODE_REVIEW
     if edit:
         return Intent.CODE_EDIT
-    if _OPS.search(folded):
+    if _OPS.search(folded) or _EXPLICIT_CHECK.search(folded) or _EXPLICIT_CONFIG.search(folded):
         return Intent.OPS
     if _READ.search(folded):
         return Intent.READ_DOC
-    if _QUERY.search(folded):
+    if _QUERY.search(folded) or _EXPLICIT_HEALTH.search(folded):
         return Intent.DATA_QUERY
     if _ISSUE.search(folded):
         return Intent.CODE_REVIEW

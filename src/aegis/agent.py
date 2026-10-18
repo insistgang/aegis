@@ -142,6 +142,7 @@ class LiveChat:
     max_completion_tokens: int | None = None
     reported_model: str | None = field(default=None, init=False)
     usage: dict[str, int] = field(default_factory=dict, init=False)
+    receipts: list[dict] = field(default_factory=list, init=False, repr=False)
 
     def complete(self, messages: list[dict], tools: list[dict]) -> dict:
         url = self.base_url.rstrip("/") + "/chat/completions"
@@ -169,13 +170,18 @@ class LiveChat:
         try:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
                 payload = json.loads(response.read().decode("utf-8"))
+                status = getattr(response, "status", 200)
         except urllib.error.HTTPError as exc:
+            self.receipts.append({"status": exc.code, "id": None, "model": None, "usage": {}, "finish_reason": None})
             detail = exc.read().decode("utf-8", errors="replace").replace(self.api_key, "[redacted]")[:500]
             raise AgentConfigError(f"模型接口返回 {exc.code}：{detail}") from exc
         except urllib.error.URLError as exc:
             reason = str(exc.reason).replace(self.api_key, "[redacted]")
             raise AgentConfigError(f"模型接口连不上：{reason}") from exc
         base_resp = payload.get("base_resp") or {}
+        self.receipts.append({"status": status, "id": payload.get("id"), "model": payload.get("model"),
+                              "usage": dict(payload.get("usage") or {}),
+                              "finish_reason": ((payload.get("choices") or [{}])[0] or {}).get("finish_reason")})
         if base_resp.get("status_code"):
             detail = str(base_resp.get("status_msg", "接口拒绝请求")).replace(self.api_key, "[redacted]")[:500]
             raise AgentConfigError(f"模型接口拒绝请求：{detail}")
