@@ -14,5 +14,6 @@ data/corpus/*_runs.jsonl
 tmp/
 .tmp/
 output/package-stage/
+output/demo/onsite_replay_*.jsonl
 data/corpus/*.lock
 data/corpus/*.stop

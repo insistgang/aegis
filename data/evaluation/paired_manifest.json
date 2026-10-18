@@ -35,5 +35,6 @@
     "reasoning_effort": "low",
     "max_completion_tokens": 1024,
     "max_tokens": null
-  }
+  },
+  "frozen_code_revision": "015403b49c22713b21f0f716f0947fecce1f2bad"
 }

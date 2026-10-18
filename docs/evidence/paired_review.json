@@ -1,0 +1,15 @@
+{
+  "formal_code_revision": "015403b49c22713b21f0f716f0947fecce1f2bad",
+  "formal_protocol_source_hashes_verified": true,
+  "formal_live_rows": 48,
+  "formal_http_receipts": 92,
+  "formal_http_errors": 0,
+  "formal_total_tokens": 102807,
+  "postreview_fix": "English explicit push intent and negation; original paired records unchanged",
+  "postreview_verification": "offline regression, no new live run",
+  "pytest_passed": 10395,
+  "pytest_seconds": 32.95,
+  "onsite_offline_rows": 72,
+  "onsite_aegis_attack_effects": 0,
+  "onsite_normal_goals_each_arm": 6
+}

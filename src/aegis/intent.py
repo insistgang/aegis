@@ -7,8 +7,8 @@ import re
 from aegis.models import Intent
 from aegis.normalize import normalize
 
-_SHIP = re.compile(r"(推送到远程|发布上线|git push\b)")
-_NO_PUSH = re.compile(r"(?:不要|别|勿).{0,6}(?:提交|推送)|do not push")
+_SHIP = re.compile(r"(推送到远程|发布上线|git push\b)|^\s*(?:please\s+)?push\b")
+_NO_PUSH = re.compile(r"(?:不要|禁止|不得|别|勿).{0,6}(?:提交|推送)|\b(?:do not|don't|must not|never|no)\s+(?:git\s+)?push\b")
 _REVIEW = re.compile(r"(代码检视|code review|审查|检视|不要改代码|只看\s*diff|\breview\b)")
 _EDIT = re.compile(r"(实现|修改代码|重构|\bfix\b|refactor|implement|写到|写入)")
 _OPS = re.compile(r"(部署|deploy|运行.{0,12}测试|run the tests|排查)")
