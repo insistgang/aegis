@@ -13,6 +13,12 @@ from aegis.redact import redact
 from aegis.session import Session
 
 
+def _safe(session: Session, value):
+    from aegis.features import redact_session
+
+    return redact(redact_session(value, getattr(session, "secrets", [])))
+
+
 class AuditStore:
     def __init__(self, db_path: str | Path) -> None:
         self.db_path = str(db_path)
@@ -107,36 +113,37 @@ class AuditStore:
         detail: dict | None = None,
     ) -> None:
         # 写入前必须先用 redact 脱敏
-        session_id = redact(session.id)
-        span_id = redact(verdict.span_id)
-        channel = redact(verdict.channel)
-        source_id = redact(verdict.source_id)
-        tool = redact(verdict.tool)
-        action_clean = redact(action or getattr(verdict, "action", "") or tool)
+        session_id = _safe(session, session.id)
+        span_id = _safe(session, verdict.span_id)
+        channel = _safe(session, verdict.channel)
+        source_id = _safe(session, verdict.source_id)
+        tool = _safe(session, verdict.tool)
+        action_clean = _safe(session, action or getattr(verdict, "action", "") or tool)
         decision = verdict.decision.value
         risk = verdict.risk
         risk_level = verdict.risk_level
-        explanation = redact(verdict.explanation)
+        explanation = _safe(session, verdict.explanation)
         deviation = verdict.deviation
-        policy_ids = [redact(p.get("id", "")) for p in verdict.policies if p.get("id")]
+        policy_ids = [_safe(session, p.get("id", "")) for p in verdict.policies if p.get("id")]
         
         evidence_indices = []
         for finding in verdict.findings:
             evidence_indices.append(
                 {
-                    "id": redact(finding.id),
-                    "family": redact(finding.family),
+                    "id": _safe(session, finding.id),
+                    "family": _safe(session, finding.family),
                     "start": finding.start,
                     "end": finding.end,
-                    "quote": redact(finding.quote),
-                    "techniques": redact(finding.techniques),
+                    "quote": _safe(session, finding.quote),
+                    "techniques": _safe(session, finding.techniques),
                     "severity": finding.severity,
+                    "source_spans": _safe(session, finding.source_spans),
                 }
             )
 
         findings_clean = [finding.to_dict() for finding in verdict.findings]
-        policies_clean = redact(verdict.policies)
-        detail_clean = redact(detail or {})
+        policies_clean = _safe(session, verdict.policies)
+        detail_clean = _safe(session, detail or {})
         now = time.time()
 
         with self._connect() as conn:
@@ -164,12 +171,12 @@ class AuditStore:
                     getattr(session.intent, "value", str(session.intent)),
                     getattr(session, "task_phrase", ""),
                     1 if getattr(session, "injection_active", False) else 0,
-                    redact(narrative),
-                    redact(getattr(session, "user_text", "")),
-                    redact(getattr(session, "task_phrase", "")),
-                    redact(getattr(session, "cause_channel", "")),
-                    redact(getattr(session, "cause_source", "")),
-                    json.dumps(redact(dag), ensure_ascii=False),
+                    _safe(session, narrative),
+                    _safe(session, getattr(session, "user_text", "")),
+                    _safe(session, getattr(session, "task_phrase", "")),
+                    _safe(session, getattr(session, "cause_channel", "")),
+                    _safe(session, getattr(session, "cause_source", "")),
+                    json.dumps(_safe(session, dag), ensure_ascii=False),
                     now,
                     now,
                 ),
@@ -224,11 +231,11 @@ class AuditStore:
                             span.id,
                             session_id,
                             span.kind,
-                            redact(span.name),
+                            _safe(session, span.name),
                             span.parent_id,
-                            redact(span.summary),
+                            _safe(session, span.summary),
                             span.decision,
-                            json.dumps(redact(span.detail), ensure_ascii=False),
+                            json.dumps(_safe(session, span.detail), ensure_ascii=False),
                             json.dumps(list(span.caused_by), ensure_ascii=False),
                             json.dumps(list(span.finding_ids), ensure_ascii=False),
                             span.ts or now,
@@ -247,16 +254,16 @@ class AuditStore:
                         """,
                         (
                             session_id,
-                            redact(impact.get("type", "")),
-                            redact(impact.get("value", "")),
-                            redact(impact.get("action", "")),
-                            redact(impact.get("decision", "")),
+                            _safe(session, impact.get("type", "")),
+                            _safe(session, impact.get("value", "")),
+                            _safe(session, impact.get("action", "")),
+                            _safe(session, impact.get("decision", "")),
                         ),
                     )
 
     def sync_session(self, session: Session, narrative: str = "") -> None:
         """显式同步会话元信息、DAG 与影响面。"""
-        session_id = redact(session.id)
+        session_id = _safe(session, session.id)
         now = time.time()
         dag = session.trace.dag() if hasattr(session, "trace") else {}
         with self._connect() as conn:
@@ -281,12 +288,12 @@ class AuditStore:
                     getattr(session.intent, "value", str(session.intent)),
                     getattr(session, "task_phrase", ""),
                     1 if getattr(session, "injection_active", False) else 0,
-                    redact(narrative),
-                    redact(getattr(session, "user_text", "")),
-                    redact(getattr(session, "task_phrase", "")),
-                    redact(getattr(session, "cause_channel", "")),
-                    redact(getattr(session, "cause_source", "")),
-                    json.dumps(redact(dag), ensure_ascii=False),
+                    _safe(session, narrative),
+                    _safe(session, getattr(session, "user_text", "")),
+                    _safe(session, getattr(session, "task_phrase", "")),
+                    _safe(session, getattr(session, "cause_channel", "")),
+                    _safe(session, getattr(session, "cause_source", "")),
+                    json.dumps(_safe(session, dag), ensure_ascii=False),
                     now,
                     now,
                 ),
@@ -309,11 +316,11 @@ class AuditStore:
                             span.id,
                             session_id,
                             span.kind,
-                            redact(span.name),
+                            _safe(session, span.name),
                             span.parent_id,
-                            redact(span.summary),
+                            _safe(session, span.summary),
                             span.decision,
-                            json.dumps(redact(span.detail), ensure_ascii=False),
+                            json.dumps(_safe(session, span.detail), ensure_ascii=False),
                             json.dumps(list(span.caused_by), ensure_ascii=False),
                             json.dumps(list(span.finding_ids), ensure_ascii=False),
                             span.ts or now,
@@ -330,10 +337,10 @@ class AuditStore:
                         """,
                         (
                             session_id,
-                            redact(impact.get("type", "")),
-                            redact(impact.get("value", "")),
-                            redact(impact.get("action", "")),
-                            redact(impact.get("decision", "")),
+                            _safe(session, impact.get("type", "")),
+                            _safe(session, impact.get("value", "")),
+                            _safe(session, impact.get("action", "")),
+                            _safe(session, impact.get("decision", "")),
                         ),
                     )
 

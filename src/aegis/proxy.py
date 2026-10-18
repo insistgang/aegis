@@ -41,6 +41,7 @@ def serve_stdio(
     upstream: list[str] | dict[str, list[str]] | None = None,
     server_name: str = "upstream",
     config_path: str | Path | None = None,
+    task: str | None = None,
 ) -> int:
     upstreams: dict[str, list[str]] = {}
     if config_path:
@@ -55,7 +56,7 @@ def serve_stdio(
         return 2
 
     is_single = len(upstreams) == 1
-    multi_gate = MultiMcpGate(servers=list(upstreams.keys()))
+    multi_gate = MultiMcpGate(servers=list(upstreams.keys()), task=task)
 
     processes: dict[str, subprocess.Popen] = {}
     write_locks: dict[str, threading.Lock] = {}
@@ -123,7 +124,7 @@ def serve_stdio(
                 if not handled:
                     # 单上游 tools/list 或 普通 tools/call 响应
                     result = message.get("result")
-                    if isinstance(result, dict) and "tools" in result:
+                    if isinstance(result, dict) and "tools" in result and message.get("id") not in multi_gate.pending_calls:
                         filtered = multi_gate.filter_server_tools(s_name, message)
                         emit_client(filtered)
                     else:

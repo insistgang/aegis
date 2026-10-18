@@ -6,11 +6,13 @@ __pycache__/
 dist/
 build/
 .DS_Store
+data/corpus/kimi_runs.jsonl
 data/corpus/*_runs.jsonl
 .aegis.local.json
 .env
 .env.*
 tmp/
+.tmp/
 output/package-stage/
 data/corpus/*.lock
 data/corpus/*.stop

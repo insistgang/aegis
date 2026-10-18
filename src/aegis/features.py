@@ -9,10 +9,11 @@ from urllib.parse import urlparse
 
 from aegis.intent import deviation, is_consequential
 from aegis.models import Intent
-from aegis.paths import extract_path, path_sensitive_read, variants
+from aegis.paths import extract_path, path_sensitive_read, path_sensitive_write, variants
 from aegis.policy import domain_trusted
-from aegis.redact import contains_secret
+from aegis.redact import contains_secret, secret_needles
 from aegis.shell import command_classes, extract_command
+from aegis.taint import contains_taint, credential_values, redact_taint
 
 _URL = re.compile(r"https?://[^\s\"'<>)\]]+", re.IGNORECASE)
 _PATH = re.compile(
@@ -114,12 +115,29 @@ def carries_secret(records: list[SecretRecord], text: str) -> bool:
     if not text or not records:
         return False
     for record in records:
-        for needle in record.needles:
-            if len(needle) >= 8 and needle in text:
-                return True
+        if contains_taint(text, record.needles):
+            return True
         if record.path and record.path in text:
             return True
     return False
+
+
+def harvest_secret(source: str, text: str, path: str) -> SecretRecord | None:
+    """按来源保留完整敏感文件和凭据值，原文仅留在会话内存。"""
+    needles = [needle for _, needle in secret_needles(text)]
+    sensitive = bool(path) and (path_sensitive_read(path) or path_sensitive_write(path))
+    if sensitive:
+        if text.strip():
+            needles.append(text)
+        needles.extend(credential_values(text))
+    if not needles and not sensitive:
+        return None
+    return SecretRecord(source=source, kind="observed", needles=list(dict.fromkeys(needles)), path=path)
+
+
+def redact_session(value, records: list[SecretRecord]):
+    """将原文与编码后的会话秘密从任意嵌套审计数据中替换掉。"""
+    return redact_taint(value, [needle for record in records for needle in record.needles])
 
 
 def build_features(

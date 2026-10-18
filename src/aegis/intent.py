@@ -72,3 +72,18 @@ def deviation(intent: Intent, tool: str) -> float:
     if is_consequential(tool):
         return 0.85
     return 0.4
+
+
+def evaluate_alignment(
+    intent: Intent,
+    task_messages: list[str],
+    tool: str,
+    args: dict,
+    history: list[dict],
+    plan: list[dict],
+    **kwargs,
+) -> dict:
+    """在既有工具意图分数之外检查合法任务约束、计划及调用序列。"""
+    from aegis.alignment import evaluate_alignment as evaluate
+
+    return evaluate(intent, task_messages, tool, args, history, plan, **kwargs)

@@ -11,7 +11,7 @@ from aegis.models import Decision, Verdict
 
 
 class McpGate:
-    def __init__(self, guard: AegisGuard | None = None, *, session_id: str = "mcp", server_name: str = "upstream") -> None:
+    def __init__(self, guard: AegisGuard | None = None, *, session_id: str = "mcp", server_name: str = "upstream", task: str | None = None) -> None:
         self.guard = guard or AegisGuard()
         self.session_id = session_id
         self.server_name = server_name
@@ -19,6 +19,8 @@ class McpGate:
         # A later description refresh cannot silently release a known poisoned tool.
         self._quarantined_tools: dict[str, Verdict] = {}
         self._lock = threading.Lock()
+        if task:
+            self.guard.inspect_user(session_id, task)
 
     def on_client(self, message: dict) -> tuple[str, dict]:
         if message.get("method") != "tools/call":
@@ -32,36 +34,39 @@ class McpGate:
         if not isinstance(args, dict):
             args = {"value": args}
         meta = params.get("_meta") or {}
-        confirmed = bool(meta.get("aegisConfirm"))
+        confirmed = meta.get("aegisConfirm") is True
         verdict = self.guard.inspect_tool_call(
             self.session_id,
             name,
             args,
             confirmed=confirmed,
             mcp=self.server_name,
+            call_id=message.get("id"),
         )
         if verdict.decision == Decision.ALLOW:
             with self._lock:
-                self.pending[message.get("id")] = {"name": name, "args": args}
+                self.pending[message.get("id")] = {"name": name, "args": args, "span_id": verdict.span_id}
             return "forward", message
         return "respond", _deny(message.get("id"), verdict)
 
     def on_upstream(self, message: dict) -> dict:
         result = message.get("result")
-        if isinstance(result, dict) and "tools" in result:
+        if isinstance(result, dict) and "tools" in result and message.get("id") not in self.pending:
             return self._filter_tools(message)
         call_id = message.get("id")
         with self._lock:
             call = self.pending.pop(call_id, None)
-        if call and isinstance(result, dict):
+        if call and ("result" in message or "error" in message):
             verdict = self.guard.observe_tool_result(
                 self.session_id,
                 call["name"],
                 call["args"],
-                _result_text(result),
+                result if "result" in message else {"error": message["error"]},
+                call_span_id=call["span_id"],
             )
             if verdict.decision == Decision.BLOCK:
                 rewritten = dict(message)
+                rewritten.pop("error", None)
                 rewritten["result"] = {
                     "content": [
                         {
@@ -111,6 +116,7 @@ class MultiMcpGate:
         *,
         session_id: str = "mcp",
         servers: list[str] | None = None,
+        task: str | None = None,
     ) -> None:
         self.guard = guard or AegisGuard()
         self.session_id = session_id
@@ -120,8 +126,10 @@ class MultiMcpGate:
             for s in self.servers
         }
         self.tool_routes: dict[str, str] = {}
-        self.pending_calls: dict[object, tuple[str, str, dict]] = {}  # id -> (server_name, raw_name, args)
+        self.pending_calls: dict[object, tuple[str, str, dict, str]] = {}
         self._lock = threading.Lock()
+        if task:
+            self.guard.inspect_user(session_id, task)
 
     def get_gate(self, server_name: str) -> McpGate:
         with self._lock:
@@ -178,7 +186,10 @@ class MultiMcpGate:
         if not isinstance(args, dict):
             args = {"value": args}
         meta = params.get("_meta") or {}
-        confirmed = bool(meta.get("aegisConfirm"))
+        confirmed = meta.get("aegisConfirm") is True
+        with self._lock:
+            if msg_id in self.pending_calls:
+                raise ValueError("客户端活动请求 ID 不能重复")
 
         # 解析路由目标
         target_server = None
@@ -214,11 +225,12 @@ class MultiMcpGate:
             args,
             confirmed=confirmed,
             mcp=target_server,
+            call_id=msg_id,
         )
 
         if verdict.decision == Decision.ALLOW:
             with self._lock:
-                self.pending_calls[msg_id] = (target_server, target_tool, args)
+                self.pending_calls[msg_id] = (target_server, target_tool, args, verdict.span_id)
             forwarded = dict(message)
             f_params = dict(params)
             f_params["name"] = target_tool
@@ -231,19 +243,24 @@ class MultiMcpGate:
     def on_upstream_result(self, server_name: str, message: dict) -> dict:
         call_id = message.get("id")
         with self._lock:
-            call = self.pending_calls.pop(call_id, None)
+            call = self.pending_calls.get(call_id)
+            if call and call[0] != server_name:
+                raise ValueError("返回的 MCP 上游与请求不匹配")
+            self.pending_calls.pop(call_id, None)
 
         result = message.get("result")
-        if call and isinstance(result, dict):
-            _, target_tool, args = call
+        if call and ("result" in message or "error" in message):
+            _, target_tool, args, span_id = call
             verdict = self.guard.observe_tool_result(
                 self.session_id,
                 target_tool,
                 args,
-                _result_text(result),
+                result if "result" in message else {"error": message["error"]},
+                call_span_id=span_id,
             )
             if verdict.decision == Decision.BLOCK:
                 rewritten = dict(message)
+                rewritten.pop("error", None)
                 rewritten["result"] = {
                     "content": [
                         {

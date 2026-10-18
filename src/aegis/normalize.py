@@ -171,15 +171,27 @@ def _decode_base64(text: str) -> list[tuple[int, int, str]]:
 
 
 def _join_quoted(text: str) -> str:
-    current = text
+    return join_quoted_with_map(text)[0]
+
+
+def join_quoted_with_map(text: str) -> tuple[str, list[int]]:
+    """删除字符串拼接语法时保留每个字符的原文来源。"""
+    current, mapping = text, list(range(len(text)))
+    patterns = [r"'([^']{0,24})'\s*'\s*([^']{0,24})'", r'"([^"]{0,24})"\s*\+\s*"([^"]{0,24})"', r"'([^']{0,24})'\s*\+\s*'([^']{0,24})'"]
     for _ in range(4):
-        updated = re.sub(r"'([^']{0,24})'\s*'\s*([^']{0,24})'", r"\1\2", current)
-        updated = re.sub(r'"([^"]{0,24})"\s*\+\s*"([^"]{0,24})"', r"\1\2", updated)
-        updated = re.sub(r"'([^']{0,24})'\s*\+\s*'([^']{0,24})'", r"\1\2", updated)
-        if updated == current:
-            return current
-        current = updated
-    return current
+        previous = current
+        for pattern in patterns:
+            chunks, positions, offset = [], [], 0
+            for match in re.finditer(pattern, current):
+                chunks.append(current[offset:match.start()]); positions.extend(mapping[offset:match.start()])
+                for group in (1, 2):
+                    chunks.append(match[group]); positions.extend(mapping[match.start(group):match.end(group)])
+                offset = match.end()
+            chunks.append(current[offset:]); positions.extend(mapping[offset:])
+            current, mapping = "".join(chunks), positions
+        if current == previous:
+            break
+    return current, mapping
 
 
 def span_from_map(mapping: list[int], start: int, end: int) -> tuple[int | None, int | None]:

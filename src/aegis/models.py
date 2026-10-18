@@ -84,6 +84,7 @@ class Finding:
     techniques: list[str] = field(default_factory=list)
     detail: str = ""
     id: str = ""
+    source_spans: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -98,6 +99,7 @@ class Finding:
             "end": self.end,
             "techniques": list(self.techniques),
             "detail": self.detail,
+            "source_spans": list(self.source_spans),
         }
 
 

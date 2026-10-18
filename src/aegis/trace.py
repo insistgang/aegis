@@ -6,6 +6,7 @@ import time
 from dataclasses import dataclass, field
 
 from aegis.redact import redact
+from aegis.provenance import SourceRegistry, Tokenizer
 
 
 @dataclass
@@ -37,8 +38,9 @@ class Span:
 
 
 class Trace:
-    def __init__(self) -> None:
+    def __init__(self, tokenizer: Tokenizer | None = None) -> None:
         self.spans: list[Span] = []
+        self.sources = SourceRegistry(tokenizer)
 
     def add(
         self,
@@ -52,6 +54,11 @@ class Trace:
         caused_by: list[str] | None = None,
         finding_ids: list[str] | None = None,
     ) -> Span:
+        known = {span.id for span in self.spans}
+        if parent_id is not None and parent_id not in known:
+            raise ValueError("调用链的父节点必须已经存在")
+        if any(source not in known for source in caused_by or []):
+            raise ValueError("影响来源必须是已存在节点")
         span = Span(
             id=f"s{len(self.spans) + 1}",
             kind=kind,

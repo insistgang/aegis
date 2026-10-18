@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 
 from aegis.models import Finding
-from aegis.normalize import _join_quoted, normalize, span_from_map
+from aegis.normalize import join_quoted_with_map, normalize, span_from_map
 
 _PATTERNS: list[tuple[str, float, re.Pattern[str]]] = [
     (
@@ -113,12 +113,18 @@ class Analysis:
     findings: list[Finding]
     techniques: list[str]
     folded: str
+    source_ref: str = ""
 
 
 def analyze(text: str, channel: str, source_id: str) -> Analysis:
     norm = normalize(text or "")
     findings: list[Finding] = []
     _scan_both(norm, channel, source_id, findings, _PATTERNS)
+    directed = []
+    _scan_directed(norm.plain, channel, source_id, directed)
+    for item in directed:
+        item.start, item.end = span_from_map(norm.fold_map, item.start, item.end)
+        _add(findings, item)
     for start, end, body in norm.comments:
         inner = normalize(body)
         before = len(findings)
@@ -130,12 +136,14 @@ def analyze(text: str, channel: str, source_id: str) -> Analysis:
             if "comment_embed" not in item.techniques:
                 item.techniques.append("comment_embed")
     _scan_needles(norm, channel, source_id, findings)
-    joined = _join_quoted(text or "")
+    joined, joined_map = join_quoted_with_map(text or "")
     if joined != (text or ""):
         inner = normalize(joined)
         before = len(findings)
         _scan_both(inner, channel, source_id, findings, _PATTERNS)
         for item in findings[before:]:
+            if item.start is not None and item.end is not None:
+                item.start, item.end = span_from_map(joined_map, item.start, item.end)
             item.techniques.append("string_concat")
             item.detail = item.detail or "joined"
     for start, end, decoded in norm.decoded:
@@ -194,6 +202,71 @@ def _scan_view(
                     source_id=source_id,
                     start=start,
                     end=end,
+                ),
+            )
+
+
+_DIRECTED: list[tuple[str, float, re.Pattern[str]]] = [
+    (
+        "secret_exfil",
+        0.9,
+        re.compile(
+            r"发送到|贴到|转交到|送到|发往|send it to|deliver it to|forward |paste |hand it|"
+            r"送って|貼って|転送して|渡して|届け|отправьте|вставьте|перешлите|передайте|доставить",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "sensitive_write",
+        0.9,
+        re.compile(
+            r"写入|写进|追加计划|落进|落地位置|write a startup|append a scheduled|persistent entry|"
+            r"autostart|belongs in|landing path|書いて|追加して|置いて|書き込み先|"
+            r"запишите|добавьте задание|автозапуска|путь записи",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "subagent_secret",
+        0.9,
+        re.compile(r"子代理|sub-agent|サブエージェント|субагент", re.IGNORECASE),
+    ),
+]
+_DIRECTED_PATH = re.compile(
+    r"(?i)(?:~/?\.ssh/|~/?\.aws/|authorized_keys|id_rsa|id_ed25519|/etc/cron|密钥|secret|秘密)"
+)
+_DIRECTED_NEG = re.compile(
+    r"不要|别把|请勿|禁止|不能|do not|don't|never|送らない|не отправ|не переда",
+    re.IGNORECASE,
+)
+
+
+def _scan_directed(text: str, channel: str, source_id: str, findings: list[Finding]) -> None:
+    """敏感路径和动作词同句出现时记为攻击。否定词在动作之前则跳过。"""
+    for family, severity, pattern in _DIRECTED:
+        for match in pattern.finditer(text):
+            sentence_start = 0
+            for mark in ("。", "\n", "!", "?"):
+                sentence_start = max(sentence_start, text.rfind(mark, 0, match.start()) + 1)
+            spaced_period = text.rfind(". ", 0, match.start())
+            if spaced_period >= 0:
+                sentence_start = max(sentence_start, spaced_period + 2)
+            before = text[sentence_start:match.start()]
+            if _DIRECTED_NEG.search(before):
+                continue
+            window = text[max(0, match.start() - 160) : match.end() + 160]
+            if not _DIRECTED_PATH.search(window):
+                continue
+            _add(
+                findings,
+                Finding(
+                    family=family,
+                    severity=severity,
+                    quote=match.group(0)[:180],
+                    channel=channel,
+                    source_id=source_id,
+                    start=match.start(),
+                    end=match.end(),
                 ),
             )
 
