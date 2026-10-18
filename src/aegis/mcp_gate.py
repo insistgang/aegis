@@ -7,7 +7,7 @@ import threading
 from typing import Any
 
 from aegis.guard import AegisGuard
-from aegis.models import Decision
+from aegis.models import Decision, Verdict
 
 
 class McpGate:
@@ -16,6 +16,8 @@ class McpGate:
         self.session_id = session_id
         self.server_name = server_name
         self.pending: dict[object, dict] = {}
+        # A later description refresh cannot silently release a known poisoned tool.
+        self._quarantined_tools: dict[str, Verdict] = {}
         self._lock = threading.Lock()
 
     def on_client(self, message: dict) -> tuple[str, dict]:
@@ -23,6 +25,9 @@ class McpGate:
             return "forward", message
         params = message.get("params") or {}
         name = str(params.get("name") or "")
+        quarantined = self.quarantined_verdict(name)
+        if quarantined is not None:
+            return "respond", _deny(message.get("id"), quarantined)
         args = params.get("arguments") or {}
         if not isinstance(args, dict):
             args = {"value": args}
@@ -70,6 +75,10 @@ class McpGate:
                 return rewritten
         return message
 
+    def quarantined_verdict(self, name: str) -> Verdict | None:
+        with self._lock:
+            return self._quarantined_tools.get(name)
+
     def _filter_tools(self, message: dict) -> dict:
         kept = []
         for tool in message["result"].get("tools") or []:
@@ -77,6 +86,10 @@ class McpGate:
             description = str(tool.get("description") or "")
             verdict = self.guard.inspect_tool_description(self.session_id, self.server_name, name, description)
             if verdict.decision == Decision.BLOCK:
+                with self._lock:
+                    self._quarantined_tools[name] = verdict
+                continue
+            if self.quarantined_verdict(name) is not None:
                 continue
             tool = dict(tool)
             tool["source"] = self.server_name
@@ -189,6 +202,10 @@ class MultiMcpGate:
 
         if not target_server:
             target_server = self.servers[0] if self.servers else "upstream"
+
+        quarantined = self.get_gate(target_server).quarantined_verdict(target_tool)
+        if quarantined is not None:
+            return "respond", None, _deny(msg_id, quarantined)
 
         # 安全判定：传 target_tool 或 raw_name
         verdict = self.guard.inspect_tool_call(

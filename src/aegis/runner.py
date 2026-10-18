@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from aegis.guard import AegisGuard
+from aegis.model import model_card
 from aegis.scenarios import BY_ID, SCENARIOS, Scenario, Step
 
 
@@ -33,6 +34,7 @@ def run_scenario(spec: Scenario | str, policy_path: str | None = None) -> dict:
         "capabilities": list(spec.capabilities),
         "passed": all(item["ok"] for item in steps),
         "steps": steps,
+        "model_threshold": model_card().get("threshold", 0.5),
         **snapshot,
     }
 

@@ -117,6 +117,7 @@ class Verdict:
     action: str = ""
     confirmed: bool = False
     deviation: float = 0.0
+    model_score: float | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -136,4 +137,5 @@ class Verdict:
             "source_id": self.source_id,
             "action": self.action,
             "confirmed": self.confirmed,
+            "model_score": None if self.model_score is None else round(self.model_score, 4),
         }

@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from aegis.guard import AegisGuard
+from aegis.model import model_card
 from aegis.models import Decision, Verdict
 from aegis.redact import redact
 
@@ -231,4 +232,5 @@ class VictimAgent:
             "timeline": snapshot.get("timeline", []),
             "impact": snapshot.get("impact", []),
             "iocs": snapshot.get("iocs", []),
+            "model_threshold": model_card().get("threshold", 0.5),
         }

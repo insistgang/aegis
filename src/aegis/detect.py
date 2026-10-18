@@ -30,7 +30,7 @@ _PATTERNS: list[tuple[str, float, re.Pattern[str]]] = [
         0.88,
         re.compile(r"忽略(?:掉)?(?:以上|之前|以前|上文|前面|所有|全部).{0,16}(?:指令|提示词|系统提示|提示|规则|约束)"),
     ),
-    ("override", 0.88, re.compile(r"以前の指示を無視")),
+    ("override", 0.88, re.compile(r"以前の指示を(?:すべて)?無視")),
     ("override", 0.88, re.compile(r"これまでの(?:指示|命令)を無視")),
     ("override", 0.88, re.compile(r"игнорир\w{0,8}\s+предыдущ\w+\s+инструкц\w+")),
     ("override", 0.86, re.compile(r"забудь(?:те)?\s+системн\w+\s+промпт")),
@@ -62,6 +62,21 @@ _PATTERNS: list[tuple[str, float, re.Pattern[str]]] = [
         "remote_exec",
         0.92,
         re.compile(r"\b(?:curl|wget)\b[^|]{0,180}\|\s*(?:ba)?sh\b"),
+    ),
+    (
+        "sensitive_write",
+        0.9,
+        re.compile(r"(?<!不要)(?<!别)(?<!请勿)(?:写入|写进|追加到).{0,48}(?:authorized_keys|/etc/cron)"),
+    ),
+    (
+        "review_push",
+        0.9,
+        re.compile(r"(?<!不要)(?<!别)(?<!勿)(?:执行|运行).{0,16}git push\b"),
+    ),
+    (
+        "review_push",
+        0.9,
+        re.compile(r"(?<!not )(?<!don't )git push\b.{0,32}(?:origin|head)"),
     ),
     ("memory_trigger", 0.82, re.compile(r"(?:会话|对话)(?:开始|启动)(?:时|后).{0,24}(?:必须|务必|自动|立即)")),
     ("memory_trigger", 0.86, re.compile(r"(?:每次|下一次).{0,8}(?:会话|对话).{0,40}(?:读取|发送|忽略|外发)")),
@@ -139,6 +154,17 @@ def analyze(text: str, channel: str, source_id: str) -> Analysis:
     return Analysis(findings=findings, techniques=list(norm.techniques), folded=norm.folded)
 
 
+_NEGATION = ("不要", "别把", "请勿", "禁止", "不能", "not ", "don't", "do not", "never ")
+_CLAUSE_BREAK = re.compile(r"[;；,，!?。！？\r\n]|\.(?=\s|$)")
+
+
+def _negated(view: str, start: int) -> bool:
+    window = view[max(0, start - 16) : start].casefold()
+    # A prohibition in an earlier clause does not negate this action.
+    window = _CLAUSE_BREAK.split(window)[-1]
+    return any(token in window for token in _NEGATION)
+
+
 def _scan_view(
     view: str,
     mapping: list[int],
@@ -148,7 +174,15 @@ def _scan_view(
     patterns: list[tuple[str, float, re.Pattern[str]]],
 ) -> None:
     for family, severity, pattern in patterns:
-        for match in pattern.finditer(view):
+        cursor = 0
+        while match := pattern.search(view, cursor):
+            cursor = match.end()
+            if family == "secret_exfil" and _negated(view, match.start()):
+                # A greedy negated match may also contain a later positive action.
+                boundary = _CLAUSE_BREAK.search(view, match.start(), match.end())
+                if boundary is not None:
+                    cursor = boundary.end()
+                continue
             start, end = span_from_map(mapping, match.start(), match.end())
             _add(
                 findings,

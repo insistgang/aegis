@@ -11,6 +11,7 @@ from aegis.detect import analyze
 from aegis.explain import describe_action, host_of, narrative, risk_level, step_explanation
 from aegis.features import SecretRecord, build_features, extract_iocs
 from aegis.intent import classify
+from aegis.model import score as model_score
 from aegis.models import (
     DECISION_ZH,
     FAMILY_ZH,
@@ -105,6 +106,7 @@ class AegisGuard:
                 source_id="user",
                 action="",
                 deviation=0.0,
+                scored_text=text,
             )
 
     def inspect_resource(self, sid: str, text: str, *, source: str, kind: str = "file") -> Verdict:
@@ -147,6 +149,7 @@ class AegisGuard:
                 source_id=memory_id,
                 action="",
                 deviation=0.0,
+                scored_text=text,
             )
 
     def inspect_tool_description(self, sid: str, server: str, tool: str, description: str) -> Verdict:
@@ -196,6 +199,7 @@ class AegisGuard:
                 source_id=source,
                 action="",
                 deviation=0.0,
+                scored_text=description,
             )
 
     def inspect_tool_call(
@@ -279,6 +283,7 @@ class AegisGuard:
                 detail=span.detail,
                 deviation=features["intent_deviation"],
                 confirmed=confirmed,
+                scored_text=arg_text,
             )
 
     def observe_tool_result(self, sid: str, tool: str, args: dict | None, result) -> Verdict:
@@ -317,6 +322,7 @@ class AegisGuard:
                 tool=tool,
                 action="",
                 deviation=0.0,
+                scored_text=text,
             )
 
     def narrative(self, sid: str) -> str:
@@ -379,6 +385,7 @@ class AegisGuard:
             source_id=source_id,
             action="",
             deviation=0.0,
+            scored_text=text,
         )
 
     def _analyze(self, session: Session, text: str, channel: str, source_id: str):
@@ -518,6 +525,7 @@ class AegisGuard:
         tool="",
         detail=None,
         confirmed=False,
+        scored_text="",
     ) -> Verdict:
         families = []
         for item in findings:
@@ -561,6 +569,7 @@ class AegisGuard:
             action=action,
             confirmed=confirmed,
             deviation=deviation,
+            model_score=model_score(scored_text) if scored_text else None,
         )
         if getattr(self, "audit", None) is not None:
             self.audit.record_verdict(session, verdict, action=action, detail=detail)

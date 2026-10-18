@@ -21,8 +21,8 @@ aegis = "aegis.__main__:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-aegis = ["data/*.yaml", "web/*.html"]
+aegis = ["data/*.yaml", "data/*.json", "web/*.html"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 testpaths = ["tests"]

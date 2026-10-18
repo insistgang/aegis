@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from aegis.guard import AegisGuard
+from aegis.model import model_card
 from aegis.models import Decision
 from aegis.policy import default_policy_path, load_policy
 from aegis.runner import run_all, run_scenario, summary
@@ -18,11 +19,35 @@ _WEB = Path(__file__).resolve().parent / "web" / "index.html"
 _MAX_BODY = 1_000_000
 
 
+def _local_origin(value: str, port: int) -> tuple[str, int] | None:
+    """只接受当前端口上的回环 HTTP 源，拒绝 URL 解析器可能宽松处理的请求头。"""
+    if not value or any(char.isspace() for char in value) or any(char in value for char in "\\?#"):
+        return None
+    try:
+        parsed = urlparse(value)
+        if parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "localhost", "::1"}:
+            return None
+        if parsed.username is not None or parsed.password is not None or parsed.path or parsed.netloc.endswith(":"):
+            return None
+        origin_port = parsed.port if parsed.port is not None else 80
+        return (parsed.hostname, origin_port) if origin_port == port else None
+    except ValueError:
+        return None
+
+
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
         if path == "/api/health":
             self._json({"ok": True, "service": "aegis"})
+            return
+        if path == "/api/llm":
+            from aegis.agent import AgentConfigError, llm_status
+
+            try:
+                self._json(llm_status())
+            except AgentConfigError as exc:
+                self._json({"configured": False, "error": str(exc)}, status=400)
             return
         if path == "/api/scenarios":
             self._json(
@@ -58,6 +83,21 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
+        if path == "/api/agent/run":
+            # 即使看板监听 0.0.0.0，模型入口也仅支持回环 Host，不接受局域网或公网域名。
+            hosts = self.headers.get_all("Host", [])
+            origins = self.headers.get_all("Origin", [])
+            port = self.server.server_address[1]
+            host_origin = _local_origin(f"http://{hosts[0]}", port) if len(hosts) == 1 else None
+            if host_origin is None:
+                self._json({"error": "模型调用只接受当前端口的 localhost、127.0.0.1 或 [::1] Host"}, status=403)
+                return
+            if origins and (len(origins) != 1 or _local_origin(origins[0], port) != host_origin):
+                self._json({"error": "模型调用只接受同源浏览器请求"}, status=403)
+                return
+            if self.headers.get_content_type() != "application/json":
+                self._json({"error": "模型调用请求必须使用 application/json"}, status=415)
+                return
         try:
             payload = self._body()
         except ValueError as exc:
@@ -74,6 +114,40 @@ class Handler(BaseHTTPRequestHandler):
                 return
             if path == "/api/scan":
                 self._json(_scan(payload))
+                return
+            if path == "/api/agent/run":
+                from aegis.agent import (
+                    AgentConfigError,
+                    ScriptedChat,
+                    live_backend_from_env,
+                    llm_settings,
+                    readme_exfil_turns,
+                    run_tool_agent,
+                )
+
+                task = str(payload.get("task") or "读取项目 README 并总结用法")
+                text = str(payload.get("text") or "")
+                source = str(payload.get("source") or "README.md")
+                backend_name = str(payload.get("backend") or "scripted")
+                try:
+                    backend = live_backend_from_env() if backend_name == "live" else ScriptedChat(readme_exfil_turns())
+                except AgentConfigError as exc:
+                    self._json(
+                        {
+                            "error": str(exc),
+                            "configured": False,
+                        },
+                        status=400,
+                    )
+                    return
+                result = run_tool_agent(task, text, backend, source=source)
+                try:
+                    settings = llm_settings()
+                    result["configured_live"] = bool(settings["api_key"] and settings["model"])
+                except AgentConfigError as exc:
+                    result["configured_live"] = False
+                    result["configuration_error"] = str(exc)
+                self._json(result)
                 return
             if path == "/api/victim/run":
                 from aegis.victim import VictimAgent
@@ -209,4 +283,5 @@ def _scan(payload: dict) -> dict:
         "bypass_reason": bypass_reason,
         "verdict": verdict.to_dict(),
         "narrative": guard.narrative("scan"),
+        "model_threshold": model_card().get("threshold", 0.5),
     }

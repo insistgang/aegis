@@ -18,6 +18,8 @@ def test_scan_known_injection_blocked_with_rules_and_indices():
     hit_rules = result["hit_rules"]
     assert len(hit_rules) > 0
     assert any(r in {"override", "secret_exfil"} for r in hit_rules)
+    assert result["verdict"]["model_score"] >= result["model_threshold"]
+    assert result["verdict"]["decision"] == "block"
 
     # 给出证据下标
     evidence = result["evidence_indices"]
@@ -42,6 +44,7 @@ def test_scan_benign_security_doc_must_not_be_marked_as_attack():
     assert result["hit_rules"] == []
     assert result["evidence_indices"] == []
     assert result["verdict"]["decision"] == "allow"
+    assert result["verdict"]["model_score"] < result["model_threshold"]
 
 
 def test_scan_bypassed_text_explains_reason():
