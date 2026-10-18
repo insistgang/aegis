@@ -1,15 +1,33 @@
 {
-  "created_at_utc": "2026-10-18T05:44:19.954374+00:00",
-  "validated_code_revision": "91e2680961b3e55a19b3b37b30268a7845c299b4",
+  "created_at_utc": "2026-10-18T06:46:33.210141+00:00",
+  "validated_code_revision": "902fce1bbdc95d830774b6a4fe829c06b6cb86da",
   "validation": {
-    "pytest_passed": 10348,
+    "pytest_passed": 10395,
     "scenarios_passed": 31,
     "steps_passed": 91,
-    "pdf_pages": 20,
-    "pdf_visual_reviewed_pages": 20
+    "pdf_pages": 22,
+    "pdf_visual_reviewed_pages": 22
   },
   "historical_model": "MiniMax-M3.1-Flash-Preview",
   "historical_completed_samples": 10000,
+  "paired_evaluation": {
+    "replay": {
+      "rows": 72,
+      "raw_sha256": "f2834592596924cb3ff435e5cf5b1d53221ba59131182519c5e0196e8fcfc111",
+      "http_receipts": 0,
+      "usage": {}
+    },
+    "live": {
+      "rows": 48,
+      "raw_sha256": "ce033f970b92b23456283bd3b161081447893167370b68ff0f631cefd376a8b5",
+      "http_receipts": 92,
+      "usage": {
+        "total_tokens": 102807,
+        "prompt_tokens": 90316,
+        "completion_tokens": 12491
+      }
+    }
+  },
   "files": [
     {
       "path": ".github/workflows/test.yml",
@@ -18,8 +36,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 234,
-      "sha256": "d7771956f923d8512f5cda17d1e3e720cc17818296b10b1261f2f769b99abe99"
+      "bytes": 268,
+      "sha256": "15f64da9a51474bc380d375f838b18e44779e70315a05ecedf267e5e5c88f9fc"
     },
     {
       "path": "Dockerfile",
@@ -38,13 +56,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 11879,
-      "sha256": "7b54b5601b8a2fac9a0adad92bd7c0c1c5d167c65d9bd532f95bc36fc6d3c2ce"
+      "bytes": 12790,
+      "sha256": "9738895ff8774a3ffc1a0339c96f2bbc4a0ab571a88dc473ec38def79781ee63"
     },
     {
       "path": "ROADMAP.md",
-      "bytes": 1383,
-      "sha256": "c14e3952f9c2a7a6f14bf32f0987718cc4f6c60709c6d11d5bec3ca942420789"
+      "bytes": 1643,
+      "sha256": "5b1fab0d1f433887b7256a34f568930ce187fb4843f14b24aff5bc4cbf1b9588"
     },
     {
       "path": "data/corpus/injection_10k.jsonl",
@@ -102,9 +120,54 @@
       "sha256": "394c8a2f97dee88a0b01ebffeb73a42b6f7f61c1d9f57f335dd5c5772a130ecc"
     },
     {
+      "path": "data/evaluation/LICENCE_InjecAgent.txt",
+      "bytes": 1066,
+      "sha256": "b48589499dbb84caa796b00b4ea652b0443e49660282c44d890fd473b8c0674e"
+    },
+    {
+      "path": "data/evaluation/development_live_incident.json",
+      "bytes": 246,
+      "sha256": "5ddd13b980d836fcd289ece8284da3df254312f7a4e80a7f05f77e5ab23efa6d"
+    },
+    {
+      "path": "data/evaluation/development_live_interrupted_runs.jsonl",
+      "bytes": 33287,
+      "sha256": "91c85064994ce8b5bd029a38882f1c9ee02ab4b38c74331b67c578fbe927d115"
+    },
+    {
+      "path": "data/evaluation/injecagent_adapted_cases.json",
+      "bytes": 23370,
+      "sha256": "1f5d6e3e41e88f595f531356c1c902bcc478833aac651223161ed150b2491106"
+    },
+    {
+      "path": "data/evaluation/paired_live_runs.jsonl",
+      "bytes": 775278,
+      "sha256": "ce033f970b92b23456283bd3b161081447893167370b68ff0f631cefd376a8b5"
+    },
+    {
+      "path": "data/evaluation/paired_live_summary.json",
+      "bytes": 14934,
+      "sha256": "a83e97b7203fb8cea16b57da486541ee5209c920ff6b87260b79c2ddd5b3b90f"
+    },
+    {
+      "path": "data/evaluation/paired_manifest.json",
+      "bytes": 1604,
+      "sha256": "1752ede0d767998165bb0ec6faea8de56acee64cbf1c30a1eacd913478c9d6ed"
+    },
+    {
+      "path": "data/evaluation/paired_replay_runs.jsonl",
+      "bytes": 701622,
+      "sha256": "f2834592596924cb3ff435e5cf5b1d53221ba59131182519c5e0196e8fcfc111"
+    },
+    {
+      "path": "data/evaluation/paired_replay_summary.json",
+      "bytes": 21713,
+      "sha256": "fdcd0f891aedb0d03537b8b846edaa5f3615b1d0b00b029dbdd57cad001ee4f9"
+    },
+    {
       "path": "docs/MiniMax全量实测报告.md",
-      "bytes": 14638,
-      "sha256": "940edca2ef42cf8b4d2349ca2b7d8a17c8e59da27401f84a143c0b49a72edd1d"
+      "bytes": 14970,
+      "sha256": "2470a87e3ee8ffb552913b79233f24d23153af96c9150926d42ada76045784c4"
     },
     {
       "path": "docs/evidence/minimax_20261018/README.md",
@@ -127,14 +190,24 @@
       "sha256": "34b8093f0a165bfbba96369f4af3016debd622ca0c3f09ef3b28ede326d5c265"
     },
     {
+      "path": "docs/evidence/paired_browser_review.json",
+      "bytes": 418,
+      "sha256": "e6d112c1d873a30963f865691795d3760c1f9b0792911b506a25ecc6b0c781c6"
+    },
+    {
+      "path": "docs/evidence/paired_review.json",
+      "bytes": 562,
+      "sha256": "ddcf9055dcf651c69433f539598603ae3c0b20df14cb2665e98807729a156252"
+    },
+    {
       "path": "docs/evidence/row_oracle_before_topic5.json",
       "bytes": 289921,
       "sha256": "d90457fa5175632255e560302b7a743881b38edfb56e0350cc16bd432697e9b2"
     },
     {
       "path": "docs/evidence/submission_review.json",
-      "bytes": 1331,
-      "sha256": "f39eac6fe9e9eb9e94d6c129ee0317f2e7d08c539e36d8edea5c82d633eac4fb"
+      "bytes": 1707,
+      "sha256": "b65379df534133d2a128dba2d516e77149467e97d60cd22776d78440488334cd"
     },
     {
       "path": "docs/evidence/topic5_defense_demo.json",
@@ -208,8 +281,8 @@
     },
     {
       "path": "docs/figures/submission_evidence.png",
-      "bytes": 82931,
-      "sha256": "eb2ed60b6da12071f92a69d4a161829196511d41a8c5b2459e5c1d4901e1b09f"
+      "bytes": 85424,
+      "sha256": "c597fd235a48eb2bd62deabbc885d37b618804bc7edf50bac2acd8daa472f0c9"
     },
     {
       "path": "docs/figures/submission_family_counts.png",
@@ -218,18 +291,18 @@
     },
     {
       "path": "docs/交付复核记录.md",
-      "bytes": 4501,
-      "sha256": "d46e5bf738b9a998c6695ac228943117f0d0536ab2087e195990a2f403bba665"
+      "bytes": 5549,
+      "sha256": "c1fe276c7468a2330622ded54938bf86dea83bf62cb96cedf9f488d7a4c15ebe"
     },
     {
       "path": "docs/作品提交文档.md",
-      "bytes": 27258,
-      "sha256": "82d6e118c96275b1a31ff84d1bcf990dbcc324f7ed9594af6a3888b14db9529e"
+      "bytes": 31957,
+      "sha256": "f5e6a42f155487be8da8a03a90c421a7a5f2cfa22d74e721557a3abe3ff454d6"
     },
     {
       "path": "docs/六项修复验收报告.md",
-      "bytes": 4517,
-      "sha256": "e1b428ee7b08eba4f986a18b0f4a2ebb900623f8e8cdf6606499e440b8747806"
+      "bytes": 4615,
+      "sha256": "b01a356b6919a35e243029dbdfbecb1ed5f3ed1c0cdc0d2a2618743b7c8d4c29"
     },
     {
       "path": "docs/六项安全能力修复方案.md",
@@ -238,23 +311,38 @@
     },
     {
       "path": "docs/提交文件构建.md",
-      "bytes": 2606,
-      "sha256": "3e9f735a01a3eb0e8235ef6a60816584c904b1b9d1762cf36e34e2b97bf6cc96"
+      "bytes": 2612,
+      "sha256": "49085955f2cf5ed274776f9c80423d2b9135b317a14f87f9a75c430ba1773f76"
+    },
+    {
+      "path": "docs/攻防对照实验报告.md",
+      "bytes": 8423,
+      "sha256": "5536df8e84cbf5150a32324fee8906a948151d3e069e90e6b11e67d03940ce7c"
+    },
+    {
+      "path": "docs/攻防对照补充方案.md",
+      "bytes": 5280,
+      "sha256": "5065a02bf7ebf27b6c63f21214373d368472c7eca4963b5872affc007fe12881"
     },
     {
       "path": "docs/测试说明.md",
-      "bytes": 12374,
-      "sha256": "68bacf1bcc921b890aee891e93de11521567acd9b5419af496d5bd1e8ec26310"
+      "bytes": 13028,
+      "sha256": "f7e9e7fdc1502643111477c4a0cc682b5842beeafdbd06ca160e0d505ee90430"
+    },
+    {
+      "path": "docs/现场演示与源码讲解.md",
+      "bytes": 5373,
+      "sha256": "82e6663e718c43d230074444b6ce87e0dc7e579318d70ed23ed98d13a9b88000"
     },
     {
       "path": "docs/设计文档.md",
-      "bytes": 15089,
-      "sha256": "7223440ca33ecdb37892a517fb997621c4f27099dbf94830bbedb32c36e65653"
+      "bytes": 15834,
+      "sha256": "1d3d8b858077d72022a3f35e7c8073b24574fca3d6357e12d26fb15e0e03cb15"
     },
     {
       "path": "docs/部署说明.md",
-      "bytes": 13908,
-      "sha256": "e1e6a42d36ac991259ea3be1b80f8d1a45546c2adee22ec27c8d4146ec444549"
+      "bytes": 14766,
+      "sha256": "c447d708dcb89ff83f8b768a25e559da03fff7bd8ecfc7e05abaaa82e66f787a"
     },
     {
       "path": "examples/fake_mcp.py",
@@ -267,14 +355,19 @@
       "sha256": "449395c041be2adcd6b9afcf24f9f2b78113560ac2506b4776fee252fa64f6b6"
     },
     {
+      "path": "output/demo/paired_eval.html",
+      "bytes": 1391735,
+      "sha256": "d5de8ad68385129b550560d0811429bb053e23e6283fd890827541630803a2bf"
+    },
+    {
       "path": "output/docx/尹纪元+神盾AEGIS+作品文档.docx",
-      "bytes": 588446,
-      "sha256": "55b6943b04eaa8bb930ac2ca76ee3ae08a805b8268a25ed72a84ef42d83bf0ed"
+      "bytes": 671586,
+      "sha256": "50fd2dee17ac88f95be75fe90f51089bdb89d4f86bd629862db88ec844e67788"
     },
     {
       "path": "output/pdf/尹纪元+神盾AEGIS+作品文档.pdf",
-      "bytes": 1059811,
-      "sha256": "7de3c082403af801240e845ff487934cceacbc8d5c3323b7c5f34db597b67f0a"
+      "bytes": 1140090,
+      "sha256": "adad416704f0430dc21b817a43f763c5d305ed8c47c57826eb100c18819d7808"
     },
     {
       "path": "pyproject.toml",
@@ -288,18 +381,28 @@
     },
     {
       "path": "scripts/build_submission.py",
-      "bytes": 17055,
-      "sha256": "a450dd9e67b66785a48343f52763ec7431da01bc037beb198f150257f15eb790"
+      "bytes": 17067,
+      "sha256": "708b69e83e42489bc4e2f26850760f520c7cd894b5213429c0612c7ced613dc0"
+    },
+    {
+      "path": "scripts/demo_paired_eval.py",
+      "bytes": 1561,
+      "sha256": "411940ac22742f861a8792f9dee5054d8289eae680f482eeb553eadd5ac23e50"
     },
     {
       "path": "scripts/package_submission.py",
-      "bytes": 5189,
-      "sha256": "f284ed8894417d36f1ab34ea822f0226653425f5d45d39fe54fcf97b232171e7"
+      "bytes": 6244,
+      "sha256": "32071f0b1d67957dc28e83fd7707c5647c95c4b31683bf7604a7b9e61db7baa7"
     },
     {
       "path": "scripts/run_kimi_corpus.py",
       "bytes": 6703,
       "sha256": "2741f05172b328c4ff58664e58ff71ad32f02af0870fdfa0da8d985b0d4b1dae"
+    },
+    {
+      "path": "scripts/run_paired_eval.py",
+      "bytes": 3481,
+      "sha256": "28e62b168093b24909d03f8b6ff0126f8b292078029c89b1072aec1ef07bc390"
     },
     {
       "path": "scripts/train_injection_model.py",
@@ -318,8 +421,8 @@
     },
     {
       "path": "src/aegis/agent.py",
-      "bytes": 21103,
-      "sha256": "a752e42674460ba4d5102ad457a20e3c53b1ec8c9be2518f26e1ede79d8268c1"
+      "bytes": 21649,
+      "sha256": "3c9810b447d2654d551b274951ff3d362a2d6aab2694b32f6df12032a3f8c420"
     },
     {
       "path": "src/aegis/alignment.py",
@@ -343,8 +446,28 @@
     },
     {
       "path": "src/aegis/detect.py",
-      "bytes": 12657,
-      "sha256": "25b8c8828863e4ac3b1a60f358fbe1d26f95ea5206c20f1f384a1f6a2f16abd8"
+      "bytes": 13026,
+      "sha256": "7ab0f399d8a0691706f95ae3b9c335ac653f81ebc45bd4333b7edbffb776806c"
+    },
+    {
+      "path": "src/aegis/eval_cases.py",
+      "bytes": 11859,
+      "sha256": "11ce537ce9566e86c1a5cc0e01303494efb71f99108a3aac31577199b5669768"
+    },
+    {
+      "path": "src/aegis/eval_report.py",
+      "bytes": 8091,
+      "sha256": "1085027c07c5ace86bb513b9e791140cf5ccb39d3851e5f185f1235dc0d33d2a"
+    },
+    {
+      "path": "src/aegis/eval_tools.py",
+      "bytes": 12697,
+      "sha256": "46fa562f7c5029da56fd3fe362488df63891ab7317d6c8b3e107eb9a1a49356c"
+    },
+    {
+      "path": "src/aegis/evaluation.py",
+      "bytes": 16542,
+      "sha256": "77e6f38467f9493efbce87bce1441ed690e61b27370b126ff5e16ca77e634732"
     },
     {
       "path": "src/aegis/explain.py",
@@ -368,8 +491,8 @@
     },
     {
       "path": "src/aegis/intent.py",
-      "bytes": 3044,
-      "sha256": "2bb15a68972a488c2b3c383b691450186205588e4d16859a92384c6f1ba2a7c7"
+      "bytes": 3721,
+      "sha256": "8586ae30e94b1d8db579d4d8f39ab99b06514cf7ad378994b69816ed8a5c5c8f"
     },
     {
       "path": "src/aegis/mcp_gate.py",
@@ -492,6 +615,26 @@
       "sha256": "7bb95b26fcdfd7f839848b2205879290710d4a5f5d92055f22e47c0e38d94a3b"
     },
     {
+      "path": "tests/test_eval_cases.py",
+      "bytes": 7894,
+      "sha256": "31c063e7510b27101b5bf3a57920efbff553a793f131722a952d65d882f99149"
+    },
+    {
+      "path": "tests/test_eval_tools.py",
+      "bytes": 3427,
+      "sha256": "2a4fc22946b5db3bb2aaf1660d7fd701c633ae230e27230ff37c990f6b94e8ba"
+    },
+    {
+      "path": "tests/test_evaluation.py",
+      "bytes": 6493,
+      "sha256": "d367659126b5acaa60c90d8737f2d6c91916844595d4c9bbb74491d3cdd393ab"
+    },
+    {
+      "path": "tests/test_evaluation_intent.py",
+      "bytes": 2944,
+      "sha256": "774c24438b8d044f9038718bce3dac6689f95d7f18904efe99c7a629f4c4df64"
+    },
+    {
       "path": "tests/test_llm_config.py",
       "bytes": 15710,
       "sha256": "9e8fbb0f44afd2bfb57a536174c134831fe188d723b0d93fd200438999e76e92"
@@ -563,8 +706,8 @@
     },
     {
       "path": "交付说明.txt",
-      "bytes": 460,
-      "sha256": "991003cc0118af615360c90cac679fc1b342f02384f7aa1c893f94799474e3c4"
+      "bytes": 624,
+      "sha256": "8063aa30f08ca61b7746b915c0221801f425cac4a49c3c67d7ea73b4a71d7f42"
     }
   ],
   "exclusions": [
@@ -578,8 +721,8 @@
   ],
   "archive": {
     "path": "尹纪元+神盾AEGIS+可执行程序.zip",
-    "bytes": 6652379,
-    "sha256": "c095a3f768118c1bf196cd60a6402589543c6bcabdf29ef14e97a4db463596a6"
+    "bytes": 7199643,
+    "sha256": "0dbda8715118c166aa7999ea53e78a1964e507249025acf2db17cb2dec6062a7"
   },
-  "package_source_directory": "output/package-stage/20261018T054419Z/神盾AEGIS"
+  "package_source_directory": "output/package-stage/20261018T064633Z/神盾AEGIS"
 }
