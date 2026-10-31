@@ -194,5 +194,6 @@ python -m aegis proxy --task '只能读取 /workspace/README.md' --config /path/
 - [作品文档 Word](output/docx/尹纪元+神盾AEGIS+作品文档.docx)：与PDF同源，包含完整正文、表格和6幅图。
 - [交付复核记录](docs/交付复核记录.md)：本次发现和修复的问题，以及10397项回归证据。
 - [文档构建说明](docs/提交文件构建.md)：统一正文、字体和渲染检查的维护方式。
+- [整合交付说明](output/INTEGRATION.md)：源码仓库与竞赛交付包两份原件的关系、逐文件比对与隔离环境复验结果。
 
 提交源码包和校验清单位于 [仓库 output 目录](https://github.com/insistgang/aegis/tree/main/output)。原始模型JSONL不作为散文件直接跟踪在Git中，本次源码包单独包含全部实测证据；解压后可按报告中的路径与SHA256核验。包内不含密钥、本机模型配置、虚拟环境或Git内部目录。
