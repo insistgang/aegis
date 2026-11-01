@@ -1,0 +1,7 @@
+{
+  "configured": true,
+  "base_url": "https://api.minimaxi.com/v1",
+  "model": "MiniMax-M3.1-Flash-Preview",
+  "reasoning_effort": "low",
+  "max_completion_tokens": 1024
+}
