@@ -52,7 +52,7 @@ python scripts/demo_paired_eval.py
 # --rerun 仅重新执行原有 72 组固定轨迹，不调用模型
 ```
 
-打开 [离线演示](output/demo/paired_eval.html)；方法、原始回执与局限见 [攻防对照报告](docs/攻防对照实验报告.md)，演示和答辩见 [现场演示与源码讲解](docs/现场演示与源码讲解.md)。六例外部来源适配保留 InjecAgent 的 MIT 许可，不是原始完整基准成绩。
+打开 [在线攻防对照演示](https://insistgang.top/aegis/)（同一份 HTML 也可从 `output/demo/paired_eval.html` 本地打开）；方法、原始回执与局限见 [攻防对照报告](docs/攻防对照实验报告.md)，演示和答辩见 [现场演示与源码讲解](docs/现场演示与源码讲解.md)。六例外部来源适配保留 InjecAgent 的 MIT 许可，不是原始完整基准成绩。
 
 ## 快速上手与运行
 
