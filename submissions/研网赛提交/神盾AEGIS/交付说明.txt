@@ -1,0 +1,9 @@
+神盾 AEGIS Python可运行源码提交包
+需要Python 3.11及以上；安装与验证见README。不是Windows独立编译程序。
+完整作品文档在output/pdf和output/docx；两种格式同源。
+历史 MiniMax 实测证据在 data/corpus；新攻防对照、原始回执和公开来源许可在 data/evaluation。
+打开 output/demo/paired_eval.html 查看离线对照；现场演示与源码讲解见 docs。
+页面分别展示原始两层对照、危险调用直接控制与间接探索，以及五类模型参数离线复核。
+未完成的 Kimi 记录不进入本包。不含实际 API 密钥。
+已验证代码基线：b98951800a29b09f238bd0c6583d086396711f4d
+历史实测在交付修复前完成，原始结果不回填修改。

@@ -1,0 +1,15 @@
+{
+  "description": "运行结束后本机专用执行器的文件快照；不代表每个历史启动版本",
+  "files": [
+    {
+      "file": "full_runner_snapshot.py.txt",
+      "sha256": "f1f6ba18565e2653743aa36db5ece121de12bb7e4cb7402e0e260783b62aa41c",
+      "bytes": 10227
+    },
+    {
+      "file": "watcher_snapshot.py.txt",
+      "sha256": "34b8093f0a165bfbba96369f4af3016debd622ca0c3f09ef3b28ede326d5c265",
+      "bytes": 9605
+    }
+  ]
+}

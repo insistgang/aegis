@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-17T11:53:55.202096+00:00",
+  "completed": 1094,
+  "new_cases": 74,
+  "observed_seconds": 93.0,
+  "successful_cases_per_minute": 47.7,
+  "new_http_status_counts": {
+    "200": 70
+  },
+  "unresolved_failed_unique": 0,
+  "target_requests_per_minute": 50,
+  "workers": 4,
+  "request_interval_seconds": 1.2,
+  "previous_interval_seconds": 1.35,
+  "experiment_60_requests_per_minute_triggered_429": true
+}

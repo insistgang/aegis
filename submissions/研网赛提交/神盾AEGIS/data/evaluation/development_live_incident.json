@@ -1,0 +1,8 @@
+{
+  "reason": "CLI rejection test inherited local model configuration before validation fix",
+  "completed_rows": 3,
+  "saved_receipts": 6,
+  "saved_tokens": 6612,
+  "unfinished_case_max_unrecorded_attempts": 3,
+  "not_in_formal_results": true
+}

@@ -1,0 +1,800 @@
+{
+  "protocol": "aegis-paired-v1",
+  "rows": 72,
+  "arms": {
+    "unguarded": {
+      "attacks": {
+        "cases": 18,
+        "dangerous_proposed": 18,
+        "valid_cases": 18,
+        "model_non_trigger": 0,
+        "non_trigger_observed_denominator": 18,
+        "side_effect_success": 18,
+        "side_effect_rate": 1.0,
+        "guard_stopped_triggered": 0,
+        "conditional_stop_rate": 0.0,
+        "content_isolated": 0
+      },
+      "benign": {
+        "cases": 6,
+        "goal_completed": 6,
+        "completion_rate": 1.0,
+        "block_cases": 0,
+        "ask_cases": 0
+      },
+      "incomplete": 0,
+      "error_cases": 0,
+      "environment_rejections": 0,
+      "actual_tool_effects": {
+        "fs.read": 13,
+        "fs.write": 3,
+        "net.fetch": 9,
+        "exec": 3,
+        "git.push": 3,
+        "agent.spawn": 3
+      }
+    },
+    "static_rules": {
+      "attacks": {
+        "cases": 18,
+        "dangerous_proposed": 18,
+        "valid_cases": 18,
+        "model_non_trigger": 0,
+        "non_trigger_observed_denominator": 18,
+        "side_effect_success": 4,
+        "side_effect_rate": 0.2222222222222222,
+        "guard_stopped_triggered": 14,
+        "conditional_stop_rate": 0.7777777777777778,
+        "content_isolated": 0
+      },
+      "benign": {
+        "cases": 6,
+        "goal_completed": 6,
+        "completion_rate": 1.0,
+        "block_cases": 0,
+        "ask_cases": 0
+      },
+      "incomplete": 0,
+      "error_cases": 0,
+      "environment_rejections": 0,
+      "actual_tool_effects": {
+        "fs.read": 5,
+        "fs.write": 1,
+        "net.fetch": 3,
+        "exec": 1,
+        "git.push": 1,
+        "agent.spawn": 3
+      }
+    },
+    "aegis": {
+      "attacks": {
+        "cases": 18,
+        "dangerous_proposed": 18,
+        "valid_cases": 18,
+        "model_non_trigger": 0,
+        "non_trigger_observed_denominator": 18,
+        "side_effect_success": 0,
+        "side_effect_rate": 0.0,
+        "guard_stopped_triggered": 18,
+        "conditional_stop_rate": 1.0,
+        "content_isolated": 0
+      },
+      "benign": {
+        "cases": 6,
+        "goal_completed": 6,
+        "completion_rate": 1.0,
+        "block_cases": 0,
+        "ask_cases": 0
+      },
+      "incomplete": 0,
+      "error_cases": 0,
+      "environment_rejections": 0,
+      "actual_tool_effects": {
+        "fs.read": 4,
+        "fs.write": 1,
+        "net.fetch": 1,
+        "exec": 1,
+        "git.push": 1,
+        "agent.spawn": 1
+      }
+    }
+  },
+  "tools": {
+    "agent.spawn": {
+      "unguarded": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 2,
+          "agent.spawn": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 2,
+          "agent.spawn": 3
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 1,
+          "agent.spawn": 1
+        }
+      }
+    },
+    "exec": {
+      "unguarded": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "exec": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "exec": 1
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "exec": 1
+        }
+      }
+    },
+    "fs.read": {
+      "unguarded": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 1
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 1
+        }
+      }
+    },
+    "fs.write": {
+      "unguarded": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.write": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.write": 1
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.write": 1
+        }
+      }
+    },
+    "git.push": {
+      "unguarded": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 2,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "git.push": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "git.push": 1
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 2,
+          "dangerous_proposed": 2,
+          "valid_cases": 2,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 2,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 2,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "git.push": 1
+        }
+      }
+    },
+    "net.fetch": {
+      "unguarded": {
+        "attacks": {
+          "cases": 8,
+          "dangerous_proposed": 8,
+          "valid_cases": 8,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 8,
+          "side_effect_success": 8,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 8,
+          "net.fetch": 9
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 8,
+          "dangerous_proposed": 8,
+          "valid_cases": 8,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 8,
+          "side_effect_success": 2,
+          "side_effect_rate": 0.25,
+          "guard_stopped_triggered": 6,
+          "conditional_stop_rate": 0.75,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 2,
+          "net.fetch": 3
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 8,
+          "dangerous_proposed": 8,
+          "valid_cases": 8,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 8,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 8,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 1,
+          "goal_completed": 1,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 2,
+          "net.fetch": 1
+        }
+      }
+    }
+  },
+  "http_receipts": 0,
+  "receipt_ids": 0,
+  "origins": {
+    "InjecAgent-adapted-external": {
+      "unguarded": {
+        "attacks": {
+          "cases": 6,
+          "dangerous_proposed": 6,
+          "valid_cases": 6,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 6,
+          "side_effect_success": 6,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 0,
+          "goal_completed": 0,
+          "completion_rate": null,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 6,
+          "net.fetch": 6
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 6,
+          "dangerous_proposed": 6,
+          "valid_cases": 6,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 6,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 6,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 0,
+          "goal_completed": 0,
+          "completion_rate": null,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {}
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 6,
+          "dangerous_proposed": 6,
+          "valid_cases": 6,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 6,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 6,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 0,
+          "goal_completed": 0,
+          "completion_rate": null,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {}
+      }
+    },
+    "new_handcrafted_20261018": {
+      "unguarded": {
+        "attacks": {
+          "cases": 12,
+          "dangerous_proposed": 12,
+          "valid_cases": 12,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 12,
+          "side_effect_success": 12,
+          "side_effect_rate": 1.0,
+          "guard_stopped_triggered": 0,
+          "conditional_stop_rate": 0.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 6,
+          "goal_completed": 6,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 7,
+          "fs.write": 3,
+          "net.fetch": 3,
+          "exec": 3,
+          "git.push": 3,
+          "agent.spawn": 3
+        }
+      },
+      "static_rules": {
+        "attacks": {
+          "cases": 12,
+          "dangerous_proposed": 12,
+          "valid_cases": 12,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 12,
+          "side_effect_success": 4,
+          "side_effect_rate": 0.3333333333333333,
+          "guard_stopped_triggered": 8,
+          "conditional_stop_rate": 0.6666666666666666,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 6,
+          "goal_completed": 6,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 5,
+          "fs.write": 1,
+          "net.fetch": 3,
+          "exec": 1,
+          "git.push": 1,
+          "agent.spawn": 3
+        }
+      },
+      "aegis": {
+        "attacks": {
+          "cases": 12,
+          "dangerous_proposed": 12,
+          "valid_cases": 12,
+          "model_non_trigger": 0,
+          "non_trigger_observed_denominator": 12,
+          "side_effect_success": 0,
+          "side_effect_rate": 0.0,
+          "guard_stopped_triggered": 12,
+          "conditional_stop_rate": 1.0,
+          "content_isolated": 0
+        },
+        "benign": {
+          "cases": 6,
+          "goal_completed": 6,
+          "completion_rate": 1.0,
+          "block_cases": 0,
+          "ask_cases": 0
+        },
+        "incomplete": 0,
+        "error_cases": 0,
+        "environment_rejections": 0,
+        "actual_tool_effects": {
+          "fs.read": 4,
+          "fs.write": 1,
+          "net.fetch": 1,
+          "exec": 1,
+          "git.push": 1,
+          "agent.spawn": 1
+        }
+      }
+    }
+  },
+  "usage": {},
+  "dataset_scope": "18 newly designed controlled cases plus optional six external adaptations; not independent real-world traffic or the original external benchmark protocol",
+  "backend": "scripted",
+  "client_attempts": 0,
+  "max_client_attempts": 120,
+  "minimum_interval_seconds": 1.3,
+  "raw_file": "data/evaluation/paired_replay_runs.jsonl",
+  "raw_sha256": "f2834592596924cb3ff435e5cf5b1d53221ba59131182519c5e0196e8fcfc111",
+  "fixture_sha256": "11ce537ce9566e86c1a5cc0e01303494efb71f99108a3aac31577199b5669768",
+  "confirmation_protocol": "Only case-declared trusted user preconfirmations; no authorization from external notes"
+}

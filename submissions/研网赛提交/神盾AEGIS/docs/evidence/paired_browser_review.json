@@ -1,0 +1,17 @@
+{
+  "case_switches": {
+    "ok": true,
+    "data": {
+      "type": "string",
+      "value": "{\"visited\":48,\"panels\":3,\"svg\":1,\"overflow\":false}"
+    }
+  },
+  "mobile": {
+    "ok": true,
+    "data": {
+      "type": "string",
+      "value": "{\"width\":390,\"client\":390,\"scroll\":390,\"overflow\":false}"
+    }
+  },
+  "checked": "replay and live, 48 dataset/case combinations; actual screenshots inspected"
+}

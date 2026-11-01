@@ -1,0 +1,14 @@
+{
+  "path": "data/corpus/injection_10k.jsonl",
+  "count": 10000,
+  "attack": 5040,
+  "benign": 4960,
+  "splits": {
+    "train": 6960,
+    "val": 1520,
+    "test": 1520
+  },
+  "templates": 2000,
+  "split_rule": "同一 template_id 的全部 surface 只属于一个 split",
+  "origin": "合成文本。赛方未提供数据集。主机名限于 example，无真实密钥。"
+}
